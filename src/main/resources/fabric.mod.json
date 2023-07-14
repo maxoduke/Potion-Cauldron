@@ -15,15 +15,19 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "me.maxoduke.mods.potioncauldron.ClientMod"
+        "dev.maxoduke.mods.potioncauldron.Mod"
     ],
     "main": [
-      "me.maxoduke.mods.potioncauldron.Mod"
+        "dev.maxoduke.mods.potioncauldron.Mod"
+    ],
+    "modmenu": [
+        "dev.maxoduke.mods.potioncauldron.config.gui.ModMenu"
     ]
   },
   "mixins": [
     "potioncauldron.mixins.json"
   ],
+  "accessWidener": "potioncauldron.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
