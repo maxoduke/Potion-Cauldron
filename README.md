@@ -62,5 +62,6 @@
 
 ### Known issues
 - Liquid transparency or potion particle effects may not work with some shaders.
+- Fabulous graphics setting breaks liquid transparency.
 
 **The mod is still in alpha phase. So expect some bugs. If you encounter any problems, please create an issue on the <a href="https://github.com/maxoduke/Potion-Cauldron/issues">Issue Tracker</a>.**
