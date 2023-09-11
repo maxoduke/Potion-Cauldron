@@ -19,7 +19,7 @@
 - <a target="_blank" href="https://modrinth.com/mod/modmenu">Mod Menu</a> for config GUI (optional)
 
 ### Installation
-- Download the appropriate JAR from either <a target="_blank" href="https://modrinth.com/mod/potion-cauldron">Modrinth</a> or <a target="_blank" href="https://curseforge.com/minecraft/mc-mods/potion-cauldron">CurseForge</a> and put it in **_./minecraft/mods_** folder.
+- Download the appropriate JAR from either <a target="_blank" href="https://modrinth.com/mod/potion-cauldron">Modrinth</a> or <a target="_blank" href="https://curseforge.com/minecraft/mc-mods/potion-cauldron">CurseForge</a> and put it in **_.minecraft/mods_** folder.
 - For multiplayer, the mod must be installed on all clients and server side.
 
 ### Configuration
