@@ -9,8 +9,8 @@
 - Apply potion effect to any entities standing inside
 - Generates in swamp huts
 
-<img style="margin-top: 10px; margin-left: 30px" src="https://raw.githubusercontent.com/maxoduke/Potion-Cauldron/1.20/stable/media/gifs/1.gif" alt="Image 1" width="500" />
-<img style="margin-top: 10px; margin-left: 30px" src="https://raw.githubusercontent.com/maxoduke/Potion-Cauldron/1.20/stable/media/gifs/2.gif" alt="Image 2" width="500" />
+<img style="margin-top: 10px; margin-left: 30px" src="https://maxoduke.dev/assets/images/mods/potion-cauldron/step1.gif" alt="Image 1" width="500" />
+<img style="margin-top: 10px; margin-left: 30px" src="https://maxoduke.dev/assets/images/mods/potion-cauldron/step2.gif" alt="Image 2" width="500" />
 
 ### Requirements
 - <a target="_blank" href="https://fabricmc.net">Fabric Loader</a> with <a target="_blank" href="https://modrinth.com/mod/fabric-api">Fabric API</a>
@@ -63,4 +63,4 @@
 ### Known issues
 - Liquid transparency or potion particle effects may not work with some shaders.
 
-**The mod is still in alpha phase. So expect some bugs. If you encounter any problems, please create an issue on the <a href="https://github.com/maxoduke/Potion-Cauldron/issues">Issue Tracker</a>.**
+**The mod is still in beta phase. So expect some bugs. If you encounter any problems, please create an issue on the <a href="https://github.com/maxoduke/Potion-Cauldron/issues">Issue Tracker</a>.**
