@@ -1,7 +1,7 @@
 package dev.maxoduke.mods.potioncauldron.config.gui;
 
 import dev.maxoduke.mods.potioncauldron.config.ServerConfig;
-import dev.maxoduke.mods.potioncauldron.config.entries.*;
+import dev.maxoduke.mods.potioncauldron.config.gui.entries.*;
 import dev.maxoduke.mods.potioncauldron.config.exceptions.InvalidConfigValueException;
 import dev.maxoduke.mods.potioncauldron.util.ProbabilityUtils;
 import net.minecraft.ChatFormatting;

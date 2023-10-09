@@ -1,4 +1,4 @@
-package dev.maxoduke.mods.potioncauldron.config.entries;
+package dev.maxoduke.mods.potioncauldron.config.gui.entries;
 
 import dev.maxoduke.mods.potioncauldron.config.gui.ConfigList;
 import net.minecraft.client.gui.Font;
