@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,6 +73,7 @@ public class PotionCauldronBlockInteraction
 
         player.setItemInHand(interactionHand, ItemUtils.createFilledResult(itemStack, player, new ItemStack(Items.GLASS_BOTTLE)));
         level.playSound(null, blockPos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0f, 1.0f);
+        level.gameEvent(null, GameEvent.FLUID_PLACE, blockPos);
 
         return InteractionResult.sidedSuccess(false);
     }
@@ -114,6 +116,7 @@ public class PotionCauldronBlockInteraction
 
         player.setItemInHand(interactionHand, ItemUtils.createFilledResult(itemStack, player, new ItemStack(Items.GLASS_BOTTLE)));
         level.playSound(null, blockPos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0f, 1.0f);
+        level.gameEvent(null, GameEvent.FLUID_PLACE, blockPos);
 
         return InteractionResult.sidedSuccess(false);
     }
@@ -146,6 +149,8 @@ public class PotionCauldronBlockInteraction
         LayeredCauldronBlock.lowerFillLevel(blockState, level, blockPos);
 
         level.playSound(null, blockPos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0f, 1.0f);
+        level.gameEvent(null, GameEvent.FLUID_PICKUP, blockPos);
+
         return InteractionResult.sidedSuccess(false);
     }
 
@@ -195,6 +200,8 @@ public class PotionCauldronBlockInteraction
             player.drop(tippedArrows, false);
 
         level.playSound(null, blockPos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0f, 1.0f);
+        level.gameEvent(null, GameEvent.FLUID_PICKUP, blockPos);
+
         return InteractionResult.sidedSuccess(false);
     }
 
@@ -210,7 +217,9 @@ public class PotionCauldronBlockInteraction
         level.setBlockAndUpdate(blockPos, Blocks.CAULDRON.defaultBlockState());
 
         player.setItemInHand(interactionHand, ItemUtils.createFilledResult(itemStack, player, new ItemStack(Items.GLASS_BOTTLE)));
+
         level.playSound(null, blockPos, PotionCauldron.POTION_EVAPORATES_SOUND_EVENT, SoundSource.BLOCKS, 1.0f, 1.0f);
+        level.gameEvent(null, GameEvent.FLUID_PLACE, blockPos);
 
         return InteractionResult.sidedSuccess(false);
     }
