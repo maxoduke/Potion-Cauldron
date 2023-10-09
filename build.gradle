@@ -19,11 +19,6 @@ repositories {
         name = 'Mod Menu'
         url = 'https://maven.terraformersmc.com/releases'
     }
-
-    maven {
-        name = 'Modrinth Maven'
-        url = 'https://api.modrinth.com/maven'
-    }
 }
 
 dependencies {
@@ -38,7 +33,6 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-    modImplementation "maven.modrinth:sodium:mc${project.sodium_minecraft_version}-${project.sodium_version}"
 }
 
 loom {
