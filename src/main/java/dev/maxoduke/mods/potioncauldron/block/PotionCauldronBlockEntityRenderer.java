@@ -2,8 +2,6 @@ package dev.maxoduke.mods.potioncauldron.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.maxoduke.mods.potioncauldron.util.ModChecker;
-import me.jellysquid.mods.sodium.client.render.texture.SpriteUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,11 +22,9 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<Po
     private static final float[] FLUID_HEIGHT = { 0, 0.5625f, 0.75f, 0.9375f };
     private static final Material WATER_MATERIAL = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation("block/water_still"));
 
-    private final boolean isSodiumPresent;
-
     public PotionCauldronBlockEntityRenderer(BlockEntityRendererProvider.Context ignored)
     {
-        isSodiumPresent = ModChecker.isSodiumPresent();
+
     }
 
     @Override
@@ -47,13 +43,11 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<Po
         int alpha = 190;
 
         TextureAtlasSprite water = WATER_MATERIAL.sprite();
-        if (isSodiumPresent)
-            SpriteUtil.markSpriteActive(water);
 
         poseStack.pushPose();
         poseStack.translate(0, FLUID_HEIGHT[liquidLevel], 0);
 
-        VertexConsumer consumer = buffer.getBuffer(RenderType.translucent());
+        VertexConsumer consumer = buffer.getBuffer(RenderType.translucentMovingBlock());
         Matrix4f matrix = poseStack.last().pose();
 
         float sizeFactor = 0.125f;
