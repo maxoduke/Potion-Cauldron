@@ -49,7 +49,7 @@ public class ConfigScreen extends Screen
     {
         super.init();
 
-        noticeIcon = new StringWidget(width - 20, 18, 10, 10, NOTICE_ICON, font);
+        noticeIcon = new StringWidget(width - 30, 18, 20, 10, NOTICE_ICON, font);
         noticeIcon.setTooltip(Tooltip.create(NOTICE_TOOLTIP));
 
         configList = new ConfigList(this, font, configToChange, this::updateButtonStates);
@@ -81,7 +81,7 @@ public class ConfigScreen extends Screen
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        renderBackground(graphics);
+        super.render(graphics, mouseX, mouseY, partialTick);
 
         graphics.drawCenteredString(font, TITLE, width / 2, 20, 0xFFFFFF);
         noticeIcon.render(graphics, mouseX, mouseY, partialTick);
@@ -90,8 +90,6 @@ public class ConfigScreen extends Screen
         saveButton.render(graphics, mouseX, mouseY, partialTick);
         resetButton.render(graphics, mouseX, mouseY, partialTick);
         cancelButton.render(graphics, mouseX, mouseY, partialTick);
-
-        super.render(graphics, mouseX, mouseY, partialTick);
     }
 
     private void saveButtonClicked(Button ignored)
