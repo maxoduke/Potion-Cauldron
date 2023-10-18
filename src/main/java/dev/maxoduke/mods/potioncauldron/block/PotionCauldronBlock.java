@@ -3,8 +3,6 @@ package dev.maxoduke.mods.potioncauldron.block;
 import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import dev.maxoduke.mods.potioncauldron.config.ServerConfig;
 import dev.maxoduke.mods.potioncauldron.util.ParticleUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.util.RandomSource;
@@ -34,8 +32,6 @@ import java.util.Map;
 
 public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityBlock
 {
-    public static final String NAME = "potion_cauldron";
-
     public PotionCauldronBlock(Properties properties, Map<Item, CauldronInteraction> map)
     {
         super(properties, null, map);
@@ -95,9 +91,8 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
         }
     }
 
-    @Override
-    @Environment(EnvType.CLIENT)
     @SuppressWarnings("DataFlowIssue")
+    @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {
         PotionCauldronBlockEntity blockEntity = (PotionCauldronBlockEntity) level.getBlockEntity(pos);
@@ -106,7 +101,6 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
         ParticleUtils.generatePotionParticles(level, pos, PotionUtils.getColor(potion), false);
     }
 
-    @Environment(EnvType.CLIENT)
     @SuppressWarnings("resource")
     public static ItemStack pickedWithPickBlock(Player player, HitResult result)
     {

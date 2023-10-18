@@ -3,10 +3,10 @@ package dev.maxoduke.mods.potioncauldron.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import dev.maxoduke.mods.potioncauldron.Mod;
+import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import dev.maxoduke.mods.potioncauldron.config.exceptions.ConfigNotFoundException;
 import dev.maxoduke.mods.potioncauldron.config.exceptions.InvalidConfigException;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import io.netty.buffer.Unpooled;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
@@ -62,15 +62,15 @@ public class ServerConfig implements IConfig
     }
 
     @NotNull
-    public FriendlyByteBuf asClientPacket()
+    public ClientConfig asClientConfig()
     {
         ClientConfig clientConfig = new ClientConfig(evaporatePotionWhenMixed, allowMergingPotions, allowCreatingTippedArrows);
 
         String json = GSON.toJson(clientConfig, ClientConfig.class);
-        FriendlyByteBuf buf = PacketByteBufs.create();
+        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 
         buf.writeByteArray(json.getBytes(StandardCharsets.UTF_8));
-        return buf;
+        return clientConfig;
     }
 
     public boolean shouldEvaporatePotionWhenMixed() { return evaporatePotionWhenMixed; }
@@ -252,7 +252,7 @@ public class ServerConfig implements IConfig
         }
         catch (Exception ex)
         {
-            Mod.LOGGER.error(String.format("Error saving Potion Cauldron config: %s", ex.getMessage()));
+            PotionCauldron.LOG.error(String.format("Error saving Potion Cauldron config: %s", ex.getMessage()));
         }
     }
 
@@ -275,7 +275,7 @@ public class ServerConfig implements IConfig
         }
         catch (Exception ex)
         {
-            Mod.LOGGER.error(
+            PotionCauldron.LOG.error(
                 ex instanceof NullPointerException || ex instanceof JsonParseException
                     ? new InvalidConfigException().getMessage()
                     : ex.getMessage()

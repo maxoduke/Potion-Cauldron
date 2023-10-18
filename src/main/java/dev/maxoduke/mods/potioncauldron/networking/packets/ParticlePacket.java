@@ -1,7 +1,7 @@
 package dev.maxoduke.mods.potioncauldron.networking.packets;
 
 import com.google.gson.Gson;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,9 +38,9 @@ public class ParticlePacket
 
     public boolean shouldGenerateMultiple() { return generateMultiple; }
 
-    public FriendlyByteBuf asPacket()
+    public FriendlyByteBuf asBuf()
     {
-        FriendlyByteBuf buf = PacketByteBufs.create();
+        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 
         String json = new Gson().toJson(this, ParticlePacket.class);
         buf.writeByteArray(json.getBytes(StandardCharsets.UTF_8));
@@ -48,7 +48,7 @@ public class ParticlePacket
         return buf;
     }
 
-    public static ParticlePacket fromPacket(FriendlyByteBuf buf)
+    public static ParticlePacket fromBuf(FriendlyByteBuf buf)
     {
         String json = new String(buf.readByteArray());
         return new Gson().fromJson(json, ParticlePacket.class);

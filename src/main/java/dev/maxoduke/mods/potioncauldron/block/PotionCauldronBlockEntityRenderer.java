@@ -2,8 +2,6 @@ package dev.maxoduke.mods.potioncauldron.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -16,7 +14,6 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import org.joml.Matrix4f;
 
-@Environment(EnvType.CLIENT)
 public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<PotionCauldronBlockEntity>
 {
     private static final float[] FLUID_HEIGHT = { 0, 0.5625f, 0.75f, 0.9375f };

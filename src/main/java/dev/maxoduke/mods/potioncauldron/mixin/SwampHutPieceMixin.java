@@ -20,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(SwampHutPiece.class)
 @SuppressWarnings("DataFlowIssue")
+@Mixin(SwampHutPiece.class)
 public class SwampHutPieceMixin
 {
     @Inject(method = "postProcess", at = @At("TAIL"))

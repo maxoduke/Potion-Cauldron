@@ -15,10 +15,10 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-        "dev.maxoduke.mods.potioncauldron.Mod"
+        "dev.maxoduke.mods.potioncauldron.PotionCauldron"
     ],
     "main": [
-        "dev.maxoduke.mods.potioncauldron.Mod"
+        "dev.maxoduke.mods.potioncauldron.PotionCauldron"
     ],
     "modmenu": [
         "dev.maxoduke.mods.potioncauldron.config.gui.ModMenu"
