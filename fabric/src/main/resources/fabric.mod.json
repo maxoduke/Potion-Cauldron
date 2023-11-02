@@ -1,0 +1,40 @@
+{
+    "schemaVersion": 1,
+    "id": "potioncauldron",
+    "version": "${version}",
+    "name": "${mod_name}",
+    "description": "${description}",
+    "authors": [
+        "${mod_author}"
+    ],
+    "contact": {
+        "homepage": "${repo}",
+        "sources": "${repo}",
+        "issues": "${repo}/issues"
+    },
+    "license": "${license}",
+    "icon": "icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "dev.maxoduke.mods.potioncauldron.FabricInitializer"
+        ],
+        "client": [
+            "dev.maxoduke.mods.potioncauldron.FabricInitializer"
+        ],
+        "modmenu": [
+            "dev.maxoduke.mods.potioncauldron.config.gui.ModMenu"
+        ]
+    },
+    "mixins": [
+        "${mod_id}.mixins.json",
+        "${mod_id}.fabric.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": "${fabric_loader_version_range}",
+        "fabric": "*",
+        "minecraft": "${fabric_minecraft_version_range}",
+        "java": ">=17"
+    }
+}
+  
