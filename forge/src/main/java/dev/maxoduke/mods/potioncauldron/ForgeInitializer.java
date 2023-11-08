@@ -61,7 +61,7 @@ public class ForgeInitializer
         SOUND_EVENTS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
-        modEventBus.addListener(this::registerBlockEntityRenderes);
+        modEventBus.addListener(this::registerBlockEntityRenderers);
     }
 
     @Mod.EventBusSubscriber(modid = PotionCauldron.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -88,7 +88,7 @@ public class ForgeInitializer
     }
 
     @SubscribeEvent
-    public void registerBlockEntityRenderes(EntityRenderersEvent.RegisterRenderers event)
+    public void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
         event.registerBlockEntityRenderer(PotionCauldron.BLOCK_ENTITY, PotionCauldronBlockEntityRenderer::new);
     }
