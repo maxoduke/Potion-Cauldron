@@ -34,8 +34,8 @@
 
 - Changing config doesn't require restarting your game (or server).
     - On single player and LAN hosted worlds:
-        - When using Mod Menu, clicking the "Save" button will sync with all connected clients.
-        - When not using Mod Menu, change the JSON file and use the command "/potioncauldron config reload".
+        - When using the GUI, clicking the "Save" button will sync with all connected clients.
+        - When not using the GUI, change the JSON file and use the command "/potioncauldron config reload".
     - On dedicated servers, after changing the config:
         - Use the "/potioncauldron config reload" command on the server console.
         - OP players can also use the above command in-game.
