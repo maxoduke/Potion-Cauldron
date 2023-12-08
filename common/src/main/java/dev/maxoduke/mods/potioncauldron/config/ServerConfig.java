@@ -28,7 +28,6 @@ public class ServerConfig implements IConfig
     private boolean allowMergingPotions;
 
     private boolean applyPotionEffectsToEntitiesInside;
-    private int potionEffectDurationInSeconds;
 
     private boolean allowCreatingTippedArrows;
     private int maxTippedArrowsForLevel1;
@@ -84,10 +83,6 @@ public class ServerConfig implements IConfig
     public boolean shouldApplyPotionEffectsToEntitiesInside() { return applyPotionEffectsToEntitiesInside; }
 
     public void setApplyPotionEffectsToEntitiesInside(boolean value) { applyPotionEffectsToEntitiesInside = value; }
-
-    public int getPotionEffectDurationInSeconds() { return potionEffectDurationInSeconds; }
-
-    public void setPotionEffectDurationInSeconds(int potionEffectDurationInSeconds) { this.potionEffectDurationInSeconds = potionEffectDurationInSeconds; }
 
     public boolean shouldAllowCreatingTippedArrows() { return allowCreatingTippedArrows; }
 
@@ -200,7 +195,6 @@ public class ServerConfig implements IConfig
         return this.evaporatePotionWhenMixed != that.evaporatePotionWhenMixed ||
             this.allowMergingPotions != that.allowMergingPotions ||
             this.applyPotionEffectsToEntitiesInside != that.applyPotionEffectsToEntitiesInside ||
-            this.potionEffectDurationInSeconds != that.potionEffectDurationInSeconds ||
             this.allowCreatingTippedArrows != that.allowCreatingTippedArrows ||
             this.maxTippedArrowsForLevel1 != that.maxTippedArrowsForLevel1 ||
             this.maxTippedArrowsForLevel2 != that.maxTippedArrowsForLevel2 ||
@@ -223,7 +217,6 @@ public class ServerConfig implements IConfig
         copy.allowMergingPotions = allowMergingPotions;
 
         copy.applyPotionEffectsToEntitiesInside = applyPotionEffectsToEntitiesInside;
-        copy.potionEffectDurationInSeconds = potionEffectDurationInSeconds;
 
         copy.allowCreatingTippedArrows = allowCreatingTippedArrows;
         copy.maxTippedArrowsForLevel1 = maxTippedArrowsForLevel1;
@@ -296,7 +289,6 @@ public class ServerConfig implements IConfig
         config.allowMergingPotions = true;
 
         config.applyPotionEffectsToEntitiesInside = false;
-        config.potionEffectDurationInSeconds = 3;
 
         // Cauldron Level 1 = 16 tipped arrows
         // Cauldron Level 2 = 32 tipped arrows

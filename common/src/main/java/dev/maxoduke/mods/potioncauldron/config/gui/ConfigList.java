@@ -25,7 +25,6 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
     private static final Component ALLOW_MERGING_POTIONS = Component.translatable("config.text.allowMergingPotions");
 
     private static final Component APPLY_POTION_EFFECTS = Component.translatable("config.text.applyPotionEffectsToEntitiesInside");
-    private static final Component POTION_EFFECT_DURATION = Component.translatable("config.text.potionEffectDuration");
 
     private static final Component ALLOW_CREATING_TIPPED_ARROWS = Component.translatable("config.text.allowCreatingTippedArrows");
     private static final Component MAX_TIPPED_ARROWS_PER_LEVEL = Component.translatable("config.text.maxTippedArrowsPerLevel");
@@ -47,8 +46,6 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
     private final Font font;
     private final ServerConfig config;
     private final Runnable onValidate;
-
-    private final EditboxEntry potionEffectDurationEntry;
 
     private final LabelEntry maxTippedArrowsPerLevelLabelEntry;
     private final EditboxEntry level1MaxTippedArrowsEntry;
@@ -85,7 +82,6 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         addEntry(new OnOffButtonEntry(font, ALLOW_MERGING_POTIONS, allowMergingPotions, this::toggleAllowMergingPotions));
 
         addEntry(new OnOffButtonEntry(font, APPLY_POTION_EFFECTS, applyPotionEffects, this::toggleApplyPotionEffects));
-        addEntry((potionEffectDurationEntry = new EditboxEntry(font, POTION_EFFECT_DURATION, 20, applyPotionEffects, String.valueOf(config.getPotionEffectDurationInSeconds()), this::validateAndUpdatePotionEffectDuration)));
 
         addEntry(new BlankEntry(font));
         addEntry(new OnOffButtonEntry(font, ALLOW_CREATING_TIPPED_ARROWS, allowCreatingTippedArrows, this::toggleAllowCreatingTippedArrows));
@@ -143,7 +139,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
 
     public boolean isValid()
     {
-        return potionEffectDurationEntry.isValid() && maxTippedArrowsPerLevelLabelEntry.isValid() && potionTypesLabelEntry.isValid() && potionLevelsLabelEntry.isValid();
+        return maxTippedArrowsPerLevelLabelEntry.isValid() && potionTypesLabelEntry.isValid() && potionLevelsLabelEntry.isValid();
     }
 
     public void toggleEvaporatePotionWhenMixed(CycleButton<Boolean> ignored, boolean newValue)
@@ -161,7 +157,6 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
     public void toggleApplyPotionEffects(CycleButton<Boolean> ignored, boolean newValue)
     {
         config.setApplyPotionEffectsToEntitiesInside(newValue);
-        potionEffectDurationEntry.enable(newValue);
 
         onValidate.run();
     }
@@ -190,31 +185,6 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         level3Entry.enable(newValue);
 
         onValidate.run();
-    }
-
-    public void validateAndUpdatePotionEffectDuration(String ignored)
-    {
-        try
-        {
-            double duration = Double.parseDouble(potionEffectDurationEntry.getValue());
-            if (Math.floor(duration) != duration)
-                throw new InvalidConfigValueException("Fractional values are not allowed");
-
-            int durationInSeconds = (int) duration;
-            if (duration < -1 || duration > 1000000)
-                throw new InvalidConfigValueException("Duration must be between -1 and 1000000");
-
-            potionEffectDurationEntry.clearError();
-            config.setPotionEffectDurationInSeconds(durationInSeconds);
-        }
-        catch (NumberFormatException | InvalidConfigValueException ex)
-        {
-            potionEffectDurationEntry.setError(ex instanceof NumberFormatException ? "Invalid value specified" : ex.getMessage());
-        }
-        finally
-        {
-            onValidate.run();
-        }
     }
 
     public void validateAndUpdateMaxTippedArrowsPerLevel(String ignored)
