@@ -16,7 +16,6 @@ public class ConfigJsonAdapter implements JsonSerializer<ServerConfig>, JsonDese
         configJson.addProperty("allowMergingPotions", config.shouldAllowMergingPotions());
 
         configJson.addProperty("applyPotionEffectsToEntitiesInside", config.shouldApplyPotionEffectsToEntitiesInside());
-        configJson.addProperty("potionEffectDurationInSeconds", config.getPotionEffectDurationInSeconds());
 
         configJson.addProperty("allowCreatingTippedArrows", config.shouldAllowCreatingTippedArrows());
 
@@ -65,7 +64,6 @@ public class ConfigJsonAdapter implements JsonSerializer<ServerConfig>, JsonDese
         config.setAllowMergingPotions(configJson.get("allowMergingPotions").getAsBoolean());
 
         config.setApplyPotionEffectsToEntitiesInside(configJson.get("applyPotionEffectsToEntitiesInside").getAsBoolean());
-        config.setPotionEffectDurationInSeconds(configJson.get("potionEffectDurationInSeconds").getAsInt());
 
         config.setAllowCreatingTippedArrows(configJson.get("allowCreatingTippedArrows").getAsBoolean());
 
