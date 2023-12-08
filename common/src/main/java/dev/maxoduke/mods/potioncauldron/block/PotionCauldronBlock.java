@@ -5,11 +5,13 @@ import dev.maxoduke.mods.potioncauldron.config.ServerConfig;
 import dev.maxoduke.mods.potioncauldron.util.ParticleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -58,6 +60,9 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
         if (level.isClientSide || !(entity instanceof LivingEntity livingEntity) || !this.isEntityInsideContent(state, pos, entity))
             return;
 
+        if (livingEntity instanceof ArmorStand)
+            return;
+
         if (livingEntity.isOnFire())
         {
             livingEntity.clearFire();
@@ -81,9 +86,13 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
             if (livingEntity.hasEffect(effect) || effect.isInstantenous())
                 continue;
 
-            int duration = serverConfig.getPotionEffectDurationInSeconds();
-            if (duration != -1)
-                duration *= 20;
+            int duration = potionEffect.getDuration();
+
+            boolean isPlayer = livingEntity instanceof ServerPlayer;
+            boolean isPlayerAndCreative = isPlayer && ((ServerPlayer) livingEntity).isCreative();
+
+            if (!isPlayer || !isPlayerAndCreative)
+                lowerFillLevel(level.getBlockState(pos), level, pos);
 
             MobEffectInstance effectInstance = new MobEffectInstance(potionEffect.getEffect(), duration, potionEffect.getAmplifier());
             livingEntity.addEffect(effectInstance);
