@@ -3,7 +3,7 @@
   "config.title": "Potion Cauldron Configuration",
   "config.notice.tooltip": "Changing this config will only affect local worlds.",
   "config.text.allowMergingPotions": "Allow merging different types of the same potion",
-  "config.text.evaporatePotionWhenMixed": "Evaporate if different potions are mixed",
+  "config.text.evaporatePotionWhenMixed": "Evaporate if different potions or liquids are mixed",
   "config.text.applyPotionEffectsToEntitiesInside": "Apply potion effects to entities inside",
   "config.text.allowFillingWithWaterDrips": "Allow filling with water drips from rain and dripstone",
   "config.text.allowCreatingTippedArrows": "Allow creating tipped arrows",
