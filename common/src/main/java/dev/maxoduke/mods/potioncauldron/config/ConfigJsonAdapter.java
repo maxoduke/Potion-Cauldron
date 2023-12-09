@@ -16,6 +16,7 @@ public class ConfigJsonAdapter implements JsonSerializer<ServerConfig>, JsonDese
         configJson.addProperty("allowMergingPotions", config.shouldAllowMergingPotions());
 
         configJson.addProperty("applyPotionEffectsToEntitiesInside", config.shouldApplyPotionEffectsToEntitiesInside());
+        configJson.addProperty("allowFillingWithWaterDrips", config.shouldAllowFillingWithWaterDrips());
 
         configJson.addProperty("allowCreatingTippedArrows", config.shouldAllowCreatingTippedArrows());
 
@@ -64,6 +65,7 @@ public class ConfigJsonAdapter implements JsonSerializer<ServerConfig>, JsonDese
         config.setAllowMergingPotions(configJson.get("allowMergingPotions").getAsBoolean());
 
         config.setApplyPotionEffectsToEntitiesInside(configJson.get("applyPotionEffectsToEntitiesInside").getAsBoolean());
+        config.setAllowFillingWithWaterDrips(configJson.get("allowFillingWithWaterDrips").getAsBoolean());
 
         config.setAllowCreatingTippedArrows(configJson.get("allowCreatingTippedArrows").getAsBoolean());
 

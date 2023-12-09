@@ -32,20 +32,24 @@ import java.util.Map;
 
 public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityBlock
 {
-    @SuppressWarnings("DataFlowIssue")
     public PotionCauldronBlock(Properties properties, Map<Item, CauldronInteraction> map)
     {
-        super(properties, null, map);
+        super(properties, LayeredCauldronBlock.RAIN, map);
     }
 
     @Override
-    protected boolean canReceiveStalactiteDrip(@NotNull Fluid fluid) { return false; }
+    public void handlePrecipitation(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Biome.@NotNull Precipitation precipitation)
+    {
+        if (PotionCauldron.CONFIG_MANAGER.serverConfig().shouldAllowFillingWithWaterDrips())
+            super.handlePrecipitation(state, level, pos, precipitation);
+    }
 
     @Override
-    public void handlePrecipitation(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Biome.@NotNull Precipitation precipitation) { }
-
-    @Override
-    protected void receiveStalactiteDrip(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Fluid fluid) { }
+    protected void receiveStalactiteDrip(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Fluid fluid)
+    {
+        if (PotionCauldron.CONFIG_MANAGER.serverConfig().shouldAllowFillingWithWaterDrips())
+            super.receiveStalactiteDrip(state, level, pos, fluid);
+    }
 
     @Nullable
     @Override

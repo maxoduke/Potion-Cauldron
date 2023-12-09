@@ -25,6 +25,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
     private static final Component ALLOW_MERGING_POTIONS = Component.translatable("config.text.allowMergingPotions");
 
     private static final Component APPLY_POTION_EFFECTS = Component.translatable("config.text.applyPotionEffectsToEntitiesInside");
+    private static final Component ALLOW_FILLING_WITH_WATER_DRIPS = Component.translatable("config.text.allowFillingWithWaterDrips");
 
     private static final Component ALLOW_CREATING_TIPPED_ARROWS = Component.translatable("config.text.allowCreatingTippedArrows");
     private static final Component MAX_TIPPED_ARROWS_PER_LEVEL = Component.translatable("config.text.maxTippedArrowsPerLevel");
@@ -45,7 +46,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
 
     private final Font font;
     private final ServerConfig config;
-    private final Runnable onValidate;
+    private final Runnable onChange;
 
     private final LabelEntry maxTippedArrowsPerLevelLabelEntry;
     private final EditboxEntry level1MaxTippedArrowsEntry;
@@ -64,17 +65,18 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
 
     private final AddPotionEntry addPotionEntry;
 
-    public ConfigList(ConfigScreen screen, Font font, ServerConfig config, Runnable onValidate)
+    public ConfigList(ConfigScreen screen, Font font, ServerConfig config, Runnable onChange)
     {
         super(Minecraft.getInstance(), screen.width, screen.height, 50, screen.height - 50, 25 /* Item height */);
 
         this.config = config;
         this.font = font;
-        this.onValidate = onValidate;
+        this.onChange = onChange;
 
         boolean evaporatePotionWhenMixed = config.shouldEvaporatePotionWhenMixed();
         boolean allowMergingPotions = config.shouldAllowMergingPotions();
         boolean applyPotionEffects = config.shouldApplyPotionEffectsToEntitiesInside();
+        boolean allowFillingWithWaterDrips = config.shouldAllowFillingWithWaterDrips();
         boolean allowCreatingTippedArrows = config.shouldAllowCreatingTippedArrows();
         boolean generateInSwampHuts = config.shouldGenerateInSwampHuts();
 
@@ -82,6 +84,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         addEntry(new OnOffButtonEntry(font, ALLOW_MERGING_POTIONS, allowMergingPotions, this::toggleAllowMergingPotions));
 
         addEntry(new OnOffButtonEntry(font, APPLY_POTION_EFFECTS, applyPotionEffects, this::toggleApplyPotionEffects));
+        addEntry(new OnOffButtonEntry(font, ALLOW_FILLING_WITH_WATER_DRIPS, allowFillingWithWaterDrips, this::toggleAllowFillingWithWaterDrips));
 
         addEntry(new BlankEntry(font));
         addEntry(new OnOffButtonEntry(font, ALLOW_CREATING_TIPPED_ARROWS, allowCreatingTippedArrows, this::toggleAllowCreatingTippedArrows));
@@ -145,20 +148,25 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
     public void toggleEvaporatePotionWhenMixed(CycleButton<Boolean> ignored, boolean newValue)
     {
         config.setEvaporatePotionWhenMixed(newValue);
-        onValidate.run();
+        onChange.run();
     }
 
     public void toggleAllowMergingPotions(CycleButton<Boolean> ignored, boolean newValue)
     {
         config.setAllowMergingPotions(newValue);
-        onValidate.run();
+        onChange.run();
     }
 
     public void toggleApplyPotionEffects(CycleButton<Boolean> ignored, boolean newValue)
     {
         config.setApplyPotionEffectsToEntitiesInside(newValue);
+        onChange.run();
+    }
 
-        onValidate.run();
+    public void toggleAllowFillingWithWaterDrips(CycleButton<Boolean> ignored, boolean newValue)
+    {
+        config.setAllowFillingWithWaterDrips(newValue);
+        onChange.run();
     }
 
     public void toggleAllowCreatingTippedArrows(CycleButton<Boolean> ignored, boolean newValue)
@@ -169,7 +177,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         level2MaxTippedArrowsEntry.enable(newValue);
         level3MaxTippedArrowsEntry.enable(newValue);
 
-        onValidate.run();
+        onChange.run();
     }
 
     public void toggleGenerateInSwampHuts(CycleButton<Boolean> ignored, boolean newValue)
@@ -184,9 +192,10 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         level2Entry.enable(newValue);
         level3Entry.enable(newValue);
 
-        onValidate.run();
+        onChange.run();
     }
 
+    @SuppressWarnings("ExtractMethodRecommender")
     public void validateAndUpdateMaxTippedArrowsPerLevel(String ignored)
     {
         try
@@ -218,7 +227,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         }
         finally
         {
-            onValidate.run();
+            onChange.run();
         }
     }
 
@@ -246,7 +255,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         }
         finally
         {
-            onValidate.run();
+            onChange.run();
         }
     }
 
@@ -274,7 +283,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         }
         finally
         {
-            onValidate.run();
+            onChange.run();
         }
     }
 
@@ -336,7 +345,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         config.potionChances().put(potionName, potionChance);
 
         addPotionEntry.clear();
-        onValidate.run();
+        onChange.run();
     }
 
     public void removePotionEntry(PotionEntry entry)
@@ -345,7 +354,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         config.potionChances().remove(entry.getPotionName());
 
         validatePotionEntries("");
-        onValidate.run();
+        onChange.run();
     }
 
     public static abstract class Entry extends ContainerObjectSelectionList.Entry<Entry>
