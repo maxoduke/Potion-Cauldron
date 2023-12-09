@@ -29,6 +29,8 @@ public class ServerConfig implements IConfig
 
     private boolean applyPotionEffectsToEntitiesInside;
 
+    private boolean allowFillingWithWaterDrips;
+
     private boolean allowCreatingTippedArrows;
     private int maxTippedArrowsForLevel1;
     private int maxTippedArrowsForLevel2;
@@ -83,6 +85,10 @@ public class ServerConfig implements IConfig
     public boolean shouldApplyPotionEffectsToEntitiesInside() { return applyPotionEffectsToEntitiesInside; }
 
     public void setApplyPotionEffectsToEntitiesInside(boolean value) { applyPotionEffectsToEntitiesInside = value; }
+
+    public boolean shouldAllowFillingWithWaterDrips() { return allowFillingWithWaterDrips; }
+
+    public void setAllowFillingWithWaterDrips(boolean value) { allowFillingWithWaterDrips = value; }
 
     public boolean shouldAllowCreatingTippedArrows() { return allowCreatingTippedArrows; }
 
@@ -195,6 +201,7 @@ public class ServerConfig implements IConfig
         return this.evaporatePotionWhenMixed != that.evaporatePotionWhenMixed ||
             this.allowMergingPotions != that.allowMergingPotions ||
             this.applyPotionEffectsToEntitiesInside != that.applyPotionEffectsToEntitiesInside ||
+            this.allowFillingWithWaterDrips != that.allowFillingWithWaterDrips ||
             this.allowCreatingTippedArrows != that.allowCreatingTippedArrows ||
             this.maxTippedArrowsForLevel1 != that.maxTippedArrowsForLevel1 ||
             this.maxTippedArrowsForLevel2 != that.maxTippedArrowsForLevel2 ||
@@ -217,6 +224,7 @@ public class ServerConfig implements IConfig
         copy.allowMergingPotions = allowMergingPotions;
 
         copy.applyPotionEffectsToEntitiesInside = applyPotionEffectsToEntitiesInside;
+        copy.allowFillingWithWaterDrips = allowFillingWithWaterDrips;
 
         copy.allowCreatingTippedArrows = allowCreatingTippedArrows;
         copy.maxTippedArrowsForLevel1 = maxTippedArrowsForLevel1;
