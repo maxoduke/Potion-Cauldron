@@ -44,6 +44,9 @@ public class PotionCauldronBlockInteraction
         MAP.put(Items.SPLASH_POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
         MAP.put(Items.LINGERING_POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
 
+        MAP.put(Items.WATER_BUCKET, PotionCauldronBlockInteraction::fillPotionCauldronWithWaterOrLavaBucket);
+        MAP.put(Items.LAVA_BUCKET, PotionCauldronBlockInteraction::fillPotionCauldronWithWaterOrLavaBucket);
+
         MAP.put(Items.GLASS_BOTTLE, PotionCauldronBlockInteraction::fillBottleFromPotionCauldron);
         MAP.put(Items.ARROW, PotionCauldronBlockInteraction::createTippedArrowsFromPotionCauldron);
     }
@@ -119,6 +122,11 @@ public class PotionCauldronBlockInteraction
         level.gameEvent(null, GameEvent.FLUID_PLACE, blockPos);
 
         return InteractionResult.sidedSuccess(false);
+    }
+
+    private static InteractionResult fillPotionCauldronWithWaterOrLavaBucket(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, ItemStack itemStack)
+    {
+        return handlePotionMixing(level, blockPos, player, interactionHand, itemStack);
     }
 
     private static InteractionResult fillBottleFromPotionCauldron(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, ItemStack itemStack)
@@ -216,7 +224,13 @@ public class PotionCauldronBlockInteraction
         ServerNetworking.sendParticlesToClients(new ParticlePacket(ParticleTypes.POOF, blockPos));
         level.setBlockAndUpdate(blockPos, Blocks.CAULDRON.defaultBlockState());
 
-        player.setItemInHand(interactionHand, ItemUtils.createFilledResult(itemStack, player, new ItemStack(Items.GLASS_BOTTLE)));
+        ItemStack itemToGiveBack;
+        if (itemStack.getItem() == Items.WATER_BUCKET || itemStack.getItem() == Items.LAVA_BUCKET)
+            itemToGiveBack = new ItemStack(Items.BUCKET);
+        else
+            itemToGiveBack = new ItemStack(Items.GLASS_BOTTLE);
+
+        player.setItemInHand(interactionHand, ItemUtils.createFilledResult(itemStack, player, itemToGiveBack));
 
         level.playSound(null, blockPos, PotionCauldron.POTION_EVAPORATES_SOUND_EVENT, SoundSource.BLOCKS, 1.0f, 1.0f);
         level.gameEvent(null, GameEvent.FLUID_PLACE, blockPos);
