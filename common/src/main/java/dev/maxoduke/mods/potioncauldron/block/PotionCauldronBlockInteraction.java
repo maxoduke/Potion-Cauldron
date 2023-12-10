@@ -28,27 +28,26 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @SuppressWarnings({ "DataFlowIssue", "DuplicatedCode" })
 public class PotionCauldronBlockInteraction
 {
-    public static final Map<Item, CauldronInteraction> MAP = CauldronInteraction.newInteractionMap();
+    public static final CauldronInteraction.InteractionMap MAP = CauldronInteraction.newInteractionMap("PotionCauldronInteractionMap");
 
     public static void bootstrap()
     {
-        CauldronInteraction.EMPTY.put(Items.SPLASH_POTION, PotionCauldronBlockInteraction::fillEmptyCauldronWithPotion);
-        CauldronInteraction.EMPTY.put(Items.LINGERING_POTION, PotionCauldronBlockInteraction::fillEmptyCauldronWithPotion);
+        CauldronInteraction.EMPTY.map().put(Items.SPLASH_POTION, PotionCauldronBlockInteraction::fillEmptyCauldronWithPotion);
+        CauldronInteraction.EMPTY.map().put(Items.LINGERING_POTION, PotionCauldronBlockInteraction::fillEmptyCauldronWithPotion);
 
-        MAP.put(Items.POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
-        MAP.put(Items.SPLASH_POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
-        MAP.put(Items.LINGERING_POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
+        MAP.map().put(Items.POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
+        MAP.map().put(Items.SPLASH_POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
+        MAP.map().put(Items.LINGERING_POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
 
-        MAP.put(Items.WATER_BUCKET, PotionCauldronBlockInteraction::fillPotionCauldronWithWaterOrLavaBucket);
-        MAP.put(Items.LAVA_BUCKET, PotionCauldronBlockInteraction::fillPotionCauldronWithWaterOrLavaBucket);
+        MAP.map().put(Items.WATER_BUCKET, PotionCauldronBlockInteraction::fillPotionCauldronWithWaterOrLavaBucket);
+        MAP.map().put(Items.LAVA_BUCKET, PotionCauldronBlockInteraction::fillPotionCauldronWithWaterOrLavaBucket);
 
-        MAP.put(Items.GLASS_BOTTLE, PotionCauldronBlockInteraction::fillBottleFromPotionCauldron);
-        MAP.put(Items.ARROW, PotionCauldronBlockInteraction::createTippedArrowsFromPotionCauldron);
+        MAP.map().put(Items.GLASS_BOTTLE, PotionCauldronBlockInteraction::fillBottleFromPotionCauldron);
+        MAP.map().put(Items.ARROW, PotionCauldronBlockInteraction::createTippedArrowsFromPotionCauldron);
     }
 
     public static InteractionResult fillEmptyCauldronWithPotion(BlockState ignored, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, ItemStack itemStack)

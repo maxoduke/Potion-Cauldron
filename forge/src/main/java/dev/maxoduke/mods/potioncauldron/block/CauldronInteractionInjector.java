@@ -11,10 +11,10 @@ public class CauldronInteractionInjector
     // Times like these make me appreciate fabric loom T_T
     public static void injectIntoEmptyPotionInteraction()
     {
-        var emptyPotionInteraction = CauldronInteraction.EMPTY.get(Items.POTION);
-        CauldronInteraction.EMPTY.remove(Items.POTION);
+        var emptyPotionInteraction = CauldronInteraction.EMPTY.map().get(Items.POTION);
+        CauldronInteraction.EMPTY.map().remove(Items.POTION);
 
-        CauldronInteraction.EMPTY.put(Items.POTION, (blockState, level, blockPos, player, interactionHand, itemStack) ->
+        CauldronInteraction.EMPTY.map().put(Items.POTION, (blockState, level, blockPos, player, interactionHand, itemStack) ->
         {
             if (PotionUtils.getPotion(itemStack) != Potions.WATER)
                 return PotionCauldronBlockInteraction.fillEmptyCauldronWithPotion(blockState, level, blockPos, player, interactionHand, itemStack);

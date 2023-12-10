@@ -1,4 +1,5 @@
 accessWidener	v1	named
+accessible method net/minecraft/world/level/block/LayeredCauldronBlock handleEntityOnFireInside (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V
 accessible method net/minecraft/world/level/levelgen/structure/StructurePiece placeBlock (Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/world/level/block/state/BlockState;IIILnet/minecraft/world/level/levelgen/structure/BoundingBox;)V
 accessible method net/minecraft/world/level/levelgen/structure/StructurePiece getWorldPos (III)Lnet/minecraft/core/BlockPos$MutableBlockPos;
 accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier

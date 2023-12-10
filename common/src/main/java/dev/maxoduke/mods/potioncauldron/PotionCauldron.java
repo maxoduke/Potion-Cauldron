@@ -32,7 +32,7 @@ public class PotionCauldron
 
     static
     {
-        BLOCK = new PotionCauldronBlock(BlockBehaviour.Properties.copy(Blocks.CAULDRON), PotionCauldronBlockInteraction.MAP);
+        BLOCK = new PotionCauldronBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), PotionCauldronBlockInteraction.MAP);
         BLOCK_ENTITY = BlockEntityType.Builder.of(PotionCauldronBlockEntity::new, PotionCauldron.BLOCK).build(null);
         POTION_EVAPORATES_SOUND_EVENT = SoundEvent.createVariableRangeEvent(POTION_EVAPORATES_SOUND_ID);
 

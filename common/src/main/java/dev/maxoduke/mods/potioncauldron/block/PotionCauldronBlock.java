@@ -12,13 +12,12 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
@@ -28,13 +27,11 @@ import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
 public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityBlock
 {
-    public PotionCauldronBlock(Properties properties, Map<Item, CauldronInteraction> map)
+    public PotionCauldronBlock(Properties properties, CauldronInteraction.InteractionMap interactionMap)
     {
-        super(properties, LayeredCauldronBlock.RAIN, map);
+        super(Biome.Precipitation.RAIN, interactionMap, properties);
     }
 
     @Override
@@ -114,7 +111,7 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
     }
 
     @Override
-    public @NotNull ItemStack getCloneItemStack(@NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos, @NotNull BlockState blockState)
+    public @NotNull ItemStack getCloneItemStack(@NotNull LevelReader reader, @NotNull BlockPos blockPos, @NotNull BlockState blockState)
     {
         return new ItemStack(Items.CAULDRON);
     }

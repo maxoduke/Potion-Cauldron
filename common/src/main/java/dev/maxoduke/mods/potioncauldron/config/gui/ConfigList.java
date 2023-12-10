@@ -67,7 +67,8 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
 
     public ConfigList(ConfigScreen screen, Font font, ServerConfig config, Runnable onChange)
     {
-        super(Minecraft.getInstance(), screen.width, screen.height, 50, screen.height - 50, 25 /* Item height */);
+        // super(Minecraft.getInstance(), screen.width, screen.height, 50, screen.height - 50);
+        super(Minecraft.getInstance(), screen.width, screen.height - 100, 50, 25);
 
         this.config = config;
         this.font = font;
