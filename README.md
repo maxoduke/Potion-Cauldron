@@ -42,14 +42,15 @@
 
 
 - Available configuration options :
-    - **Evaporate if different potions are mixed**
-        - **ON:** If a player tries to put a different potion in a potion cauldron, the potion from the bottle and the cauldron will evaporate and disappear.
-        - **OFF:** Potion in hand is used as normal if it's different from the potion in cauldron.
+    - **Evaporate if different potions or liquids are mixed**
+        - **ON:** If a player tries to put a different potion or liquid (water or lava) in a potion cauldron, the liquids from both the cauldron and the hand will evaporate and disappear.
+        - **OFF:** Item in hand is used normally.
     - **Allow merging different types of the same potion**
         - **ON:** Allows merging normal, splash and lingering variants of the same potion. Taking back the potion will give whatever type was put in last.
         - **OFF:** Applies whatever is set in **Evaporate if different potions are mixed** option.
         - It's how it works in Bedrock edition. For instance, you can put a Potion of Fire Resistance, Splash Potion of Fire Resistance and a Lingering Potion of Fire Resistance in the same cauldron. Picking up would give back 3 bottles of Lingering Potion of Fire Resistance.
     - **Apply potion effects to entities standing inside and its duration**
+    - **Allow filling with water drips from rain and dripstone**
     - **Allow creating tipped arrows and the maximum number of arrows for each level**
     - **Generate in swamp huts**
         - **ON:** When a swamp hut (witch hut) is generated, a cauldron filled with a random potion, type and level will be generated instead of an empty one.
