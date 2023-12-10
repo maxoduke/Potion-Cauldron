@@ -49,7 +49,7 @@
         - **ON:** Allows merging normal, splash and lingering variants of the same potion. Taking back the potion will give whatever type was put in last.
         - **OFF:** Applies whatever is set in **Evaporate if different potions are mixed** option.
         - It's how it works in Bedrock edition. For instance, you can put a Potion of Fire Resistance, Splash Potion of Fire Resistance and a Lingering Potion of Fire Resistance in the same cauldron. Picking up would give back 3 bottles of Lingering Potion of Fire Resistance.
-    - **Apply potion effects to entities standing inside and its duration**
+    - **Apply potion effects to entities standing inside**
     - **Allow filling with water drips from rain and dripstone**
     - **Allow creating tipped arrows and the maximum number of arrows for each level**
     - **Generate in swamp huts**
