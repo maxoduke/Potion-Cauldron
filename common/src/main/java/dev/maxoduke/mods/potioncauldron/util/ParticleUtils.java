@@ -9,7 +9,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-@SuppressWarnings("DataFlowIssue")
 public class ParticleUtils
 {
     public static void generatePotionParticles(Level level, BlockPos pos, int color, boolean generateMultiple)
@@ -54,6 +53,7 @@ public class ParticleUtils
                 0.7
             );
 
+            assert particle != null;
             particle.setColor(red, green, blue);
         }
     }

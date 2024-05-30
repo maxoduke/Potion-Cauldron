@@ -4,6 +4,7 @@ import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import dev.maxoduke.mods.potioncauldron.config.ServerConfig;
 import dev.maxoduke.mods.potioncauldron.util.ParticleUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -15,7 +16,7 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
@@ -79,12 +80,18 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
         if (blockEntity == null)
             return;
 
-        Potion potion = blockEntity.getPotion();
+        Holder<Potion> potionHolder = blockEntity.getPotion();
+        if (potionHolder == null)
+            return;
+
+        Potion potion = potionHolder.value();
+        if (potion.hasInstantEffects())
+            return;
 
         for (var potionEffect : potion.getEffects())
         {
-            MobEffect effect = potionEffect.getEffect();
-            if (livingEntity.hasEffect(effect) || effect.isInstantenous())
+            Holder<MobEffect> effect = potionEffect.getEffect();
+            if (livingEntity.hasEffect(effect))
                 continue;
 
             int duration = potionEffect.getDuration();
@@ -100,14 +107,18 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
         }
     }
 
-    @SuppressWarnings("DataFlowIssue")
     @Override
     public void animateTick(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull RandomSource random)
     {
         PotionCauldronBlockEntity blockEntity = (PotionCauldronBlockEntity) level.getBlockEntity(pos);
-        Potion potion = blockEntity.getPotion();
+        if (blockEntity == null)
+            return;
 
-        ParticleUtils.generatePotionParticles(level, pos, PotionUtils.getColor(potion), false);
+        Holder<Potion> potion = blockEntity.getPotion();
+        if (potion == null)
+            return;
+
+        ParticleUtils.generatePotionParticles(level, pos, PotionContents.getColor(potion.value().getEffects()), false);
     }
 
     @Override

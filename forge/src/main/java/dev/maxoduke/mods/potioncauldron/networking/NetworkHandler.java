@@ -1,8 +1,8 @@
 package dev.maxoduke.mods.potioncauldron.networking;
 
 import dev.maxoduke.mods.potioncauldron.PotionCauldron;
-import dev.maxoduke.mods.potioncauldron.config.ClientConfig;
-import dev.maxoduke.mods.potioncauldron.networking.packets.ParticlePacket;
+import dev.maxoduke.mods.potioncauldron.networking.payloads.ClientConfigPayload;
+import dev.maxoduke.mods.potioncauldron.networking.payloads.ParticlePayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -29,16 +29,16 @@ public class NetworkHandler
     public static void register()
     {
         INSTANCE
-            .messageBuilder(ClientConfig.class, 1, NetworkDirection.PLAY_TO_CLIENT)
-            .encoder(ClientConfig::writeToBuf)
-            .decoder(ClientConfig::fromBuf)
+            .messageBuilder(ClientConfigPayload.class, 1, NetworkDirection.PLAY_TO_CLIENT)
+            .encoder(ClientConfigPayload::writeToBuf)
+            .decoder(ClientConfigPayload::fromBuf)
             .consumerMainThread((config, context) -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientNetworking.receiveConfigFromServer(config)))
             .add();
 
         INSTANCE
-            .messageBuilder(ParticlePacket.class, 2, NetworkDirection.PLAY_TO_CLIENT)
-            .encoder(ParticlePacket::writeToBuf)
-            .decoder(ParticlePacket::fromBuf)
+            .messageBuilder(ParticlePayload.class, 2, NetworkDirection.PLAY_TO_CLIENT)
+            .encoder(ParticlePayload::writeToBuf)
+            .decoder(ParticlePayload::fromBuf)
             .consumerMainThread((packet, context) -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientNetworking.receiveParticlesFromServer(packet)))
             .add();
     }

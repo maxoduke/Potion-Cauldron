@@ -16,7 +16,10 @@
 <img alt="fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">
 <img alt="quilt" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/quilt_vector.svg">
 <img alt="forge" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg">
+<br />
 
+### Where is the updated Forge version?
+- The mod hasn't been updated to Forge 1.20.6 becuase Mixins are broken on Forge 1.20.6. Untill and unless this problem is fixed, I will not be bothering with Forge.
 
 ### Requirements
 - **Fabric:** <a target="_blank" href="https://modrinth.com/mod/fabric-api">Fabric API</a> (Optionally <a target="_blank" href="https://modrinth.com/mod/modmenu">Mod Menu</a> for config GUI)
@@ -58,7 +61,7 @@
         - The chances of the generated random potion, its type and level can be configured.
 
 ### Compatibility with other mods
-- Compatible with <a href="https://modrinth.com/mod/sodium">Sodium</a> and <a href="https://modrinth.com/mod/rubidium">Rubidium</a>
+- Compatible with <a href="https://modrinth.com/mod/sodium">Sodium</a> and its Forge ports.
 - Should be compatible with mods that modify vanilla cauldron behavior.
 - Should be compatible with modded potions that are added using the vanilla potion registry.
 - May not be compatible with custom potion systems.

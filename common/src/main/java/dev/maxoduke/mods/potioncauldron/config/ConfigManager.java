@@ -1,9 +1,11 @@
 package dev.maxoduke.mods.potioncauldron.config;
 
+import dev.maxoduke.mods.potioncauldron.networking.payloads.ClientConfigPayload;
+
 public class ConfigManager
 {
     private ServerConfig serverConfig;
-    private ClientConfig clientConfig;
+    private ClientConfigPayload clientConfig;
 
     public ServerConfig serverConfig() { return serverConfig; }
 
@@ -20,5 +22,5 @@ public class ConfigManager
 
     public IConfig clientOrServerConfig() { return clientConfig != null ? clientConfig : serverConfig; }
 
-    public void setClientConfig(ClientConfig clientConfig) { this.clientConfig = clientConfig; }
+    public void setClientConfig(ClientConfigPayload clientConfig) { this.clientConfig = clientConfig; }
 }

@@ -24,6 +24,9 @@ public class PotionCauldron
     public static final String POTION_EVAPORATES_SOUND_NAME = "potion_evaporates";
     public static final ResourceLocation POTION_EVAPORATES_SOUND_ID = new ResourceLocation(MOD_ID, POTION_EVAPORATES_SOUND_NAME);
 
+    public static final ResourceLocation CONFIG_CHANNEL = new ResourceLocation(PotionCauldron.MOD_ID, "config_channel");
+    public static final ResourceLocation PARTICLES_CHANNEL = new ResourceLocation(PotionCauldron.MOD_ID, "particles_channel");
+
     public static final PotionCauldronBlock BLOCK;
     public static final BlockEntityType<PotionCauldronBlockEntity> BLOCK_ENTITY;
     public static final SoundEvent POTION_EVAPORATES_SOUND_EVENT;
@@ -32,7 +35,7 @@ public class PotionCauldron
 
     static
     {
-        BLOCK = new PotionCauldronBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), PotionCauldronBlockInteraction.MAP);
+        BLOCK = new PotionCauldronBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), PotionCauldronBlockInteraction.INTERACTION_MAP);
         BLOCK_ENTITY = BlockEntityType.Builder.of(PotionCauldronBlockEntity::new, PotionCauldron.BLOCK).build(null);
         POTION_EVAPORATES_SOUND_EVENT = SoundEvent.createVariableRangeEvent(POTION_EVAPORATES_SOUND_ID);
 

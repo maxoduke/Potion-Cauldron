@@ -6,13 +6,11 @@ import com.google.gson.JsonParseException;
 import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import dev.maxoduke.mods.potioncauldron.config.exceptions.ConfigNotFoundException;
 import dev.maxoduke.mods.potioncauldron.config.exceptions.InvalidConfigException;
+import dev.maxoduke.mods.potioncauldron.networking.payloads.ClientConfigPayload;
 import dev.maxoduke.mods.potioncauldron.platform.Services;
-import io.netty.buffer.Unpooled;
-import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -63,15 +61,9 @@ public class ServerConfig implements IConfig
     }
 
     @NotNull
-    public ClientConfig asClientConfig()
+    public ClientConfigPayload asClientConfig()
     {
-        ClientConfig clientConfig = new ClientConfig(evaporatePotionWhenMixed, allowMergingPotions, allowCreatingTippedArrows);
-
-        String json = GSON.toJson(clientConfig, ClientConfig.class);
-        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-
-        buf.writeByteArray(json.getBytes(StandardCharsets.UTF_8));
-        return clientConfig;
+        return new ClientConfigPayload(evaporatePotionWhenMixed, allowMergingPotions, allowCreatingTippedArrows);
     }
 
     public boolean shouldEvaporatePotionWhenMixed() { return evaporatePotionWhenMixed; }

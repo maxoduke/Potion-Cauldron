@@ -4,6 +4,7 @@ import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import dev.maxoduke.mods.potioncauldron.block.PotionCauldronBlockEntity;
 import dev.maxoduke.mods.potioncauldron.util.PotionRandomizer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -20,7 +21,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@SuppressWarnings("DataFlowIssue")
+import java.util.Optional;
+
+@SuppressWarnings({ "DataFlowIssue", "UnreachableCode" })
 @Mixin(SwampHutPiece.class)
 public class SwampHutPieceMixin
 {
@@ -38,15 +41,19 @@ public class SwampHutPieceMixin
         if (potionResource == null)
             return;
 
-        Potion randomPotion = BuiltInRegistries.POTION.get(potionResource);
+        Optional<Holder.Reference<Potion>> randomPotion = BuiltInRegistries.POTION.getHolder(potionResource);
         String randomPotionType = PotionRandomizer.getRandomPotionType();
         Integer randomPotionLevel = PotionRandomizer.getRandomPotionLevel();
 
+        if (randomPotion.isEmpty())
+            return;
+
         SwampHutPiece swampHut = (SwampHutPiece) ((Object) this);
+        // For some reason, IntelliJ thinks all lines after this comment is unreachable code because why not ¯\_(ツ)_/¯
         swampHut.placeBlock(level, PotionCauldron.BLOCK.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, randomPotionLevel), 4, 2, 6, box);
 
         PotionCauldronBlockEntity blockEntity = (PotionCauldronBlockEntity) level.getBlockEntity(swampHut.getWorldPos(4, 2, 6));
-        blockEntity.setPotion(randomPotion);
+        blockEntity.setPotion(randomPotion.get());
         blockEntity.setPotionType(randomPotionType);
     }
 }

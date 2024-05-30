@@ -10,11 +10,12 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.Potions;
 
 import java.math.BigDecimal;
 
@@ -205,7 +206,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
             int level2MaxTippedArrows = Integer.parseInt(level2MaxTippedArrowsEntry.getValue());
             int level3MaxTippedArrows = Integer.parseInt(level3MaxTippedArrowsEntry.getValue());
 
-            int maxStackSize = Items.TIPPED_ARROW.getMaxStackSize();
+            int maxStackSize = Items.TIPPED_ARROW.getDefaultMaxStackSize();
 
             if (level1MaxTippedArrows > maxStackSize || level2MaxTippedArrows > maxStackSize || level3MaxTippedArrows > maxStackSize)
                 throw new InvalidConfigValueException("Total exceeds the maximum stack size of %d".formatted(maxStackSize));
@@ -303,8 +304,8 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
                 return;
             }
 
-            Potion potion = Potion.byName(potionName);
-            if (potion == Potions.EMPTY)
+            Potion potion = BuiltInRegistries.POTION.get(new ResourceLocation(potionName));
+            if (potion == null)
                 throw new InvalidConfigValueException("Invalid potion name specified");
 
             potionName = potionName.replace("minecraft:", "");

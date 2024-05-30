@@ -1,6 +1,6 @@
 package dev.maxoduke.mods.potioncauldron.platform.services;
 
-public interface IPlatformHelper 
+public interface IPlatformHelper
 {
     String getConfigDirPath();
 }

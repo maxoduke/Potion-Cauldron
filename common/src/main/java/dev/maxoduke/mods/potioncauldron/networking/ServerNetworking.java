@@ -1,9 +1,9 @@
 package dev.maxoduke.mods.potioncauldron.networking;
 
 import dev.maxoduke.mods.potioncauldron.PotionCauldron;
-import dev.maxoduke.mods.potioncauldron.config.ClientConfig;
 import dev.maxoduke.mods.potioncauldron.config.ServerConfig;
-import dev.maxoduke.mods.potioncauldron.networking.packets.ParticlePacket;
+import dev.maxoduke.mods.potioncauldron.networking.payloads.ClientConfigPayload;
+import dev.maxoduke.mods.potioncauldron.networking.payloads.ParticlePayload;
 import dev.maxoduke.mods.potioncauldron.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
@@ -28,7 +28,7 @@ public class ServerNetworking
 
     public static void sendConfigToClient(ServerPlayer player)
     {
-        ClientConfig config = PotionCauldron.CONFIG_MANAGER.serverConfig().asClientConfig();
+        ClientConfigPayload config = PotionCauldron.CONFIG_MANAGER.serverConfig().asClientConfig();
         Services.NETWORK.sendConfigToClient(player, config);
     }
 
@@ -37,12 +37,12 @@ public class ServerNetworking
         if (server == null)
             return;
 
-        ClientConfig config = PotionCauldron.CONFIG_MANAGER.serverConfig().asClientConfig();
+        ClientConfigPayload config = PotionCauldron.CONFIG_MANAGER.serverConfig().asClientConfig();
         for (ServerPlayer player : server.getPlayerList().getPlayers())
             Services.NETWORK.sendConfigToClient(player, config);
     }
 
-    public static void sendParticlesToClients(ParticlePacket particleInfo)
+    public static void sendParticlesToClients(ParticlePayload particleInfo)
     {
         BlockPos particlePosition = particleInfo.getBlockPos();
         Vec3 position = new Vec3(

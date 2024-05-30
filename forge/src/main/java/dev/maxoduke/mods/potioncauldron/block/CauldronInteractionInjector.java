@@ -1,8 +1,9 @@
 package dev.maxoduke.mods.potioncauldron.block;
 
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 
 public class CauldronInteractionInjector
@@ -16,7 +17,8 @@ public class CauldronInteractionInjector
 
         CauldronInteraction.EMPTY.map().put(Items.POTION, (blockState, level, blockPos, player, interactionHand, itemStack) ->
         {
-            if (PotionUtils.getPotion(itemStack) != Potions.WATER)
+            PotionContents potionContents = itemStack.get(DataComponents.POTION_CONTENTS);
+            if (potionContents != null && !potionContents.is(Potions.WATER))
                 return PotionCauldronBlockInteraction.fillEmptyCauldronWithPotion(blockState, level, blockPos, player, interactionHand, itemStack);
 
             return emptyPotionInteraction.interact(blockState, level, blockPos, player, interactionHand, itemStack);

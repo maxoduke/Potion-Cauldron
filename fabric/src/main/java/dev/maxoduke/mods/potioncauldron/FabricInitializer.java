@@ -3,10 +3,10 @@ package dev.maxoduke.mods.potioncauldron;
 import dev.maxoduke.mods.potioncauldron.block.PotionCauldronBlockEntityRenderer;
 import dev.maxoduke.mods.potioncauldron.block.PotionCauldronBlockInteraction;
 import dev.maxoduke.mods.potioncauldron.commands.CommandHandlers;
-import dev.maxoduke.mods.potioncauldron.config.ClientConfig;
 import dev.maxoduke.mods.potioncauldron.networking.ClientNetworking;
 import dev.maxoduke.mods.potioncauldron.networking.ServerNetworking;
-import dev.maxoduke.mods.potioncauldron.networking.packets.ParticlePacket;
+import dev.maxoduke.mods.potioncauldron.networking.payloads.ClientConfigPayload;
+import dev.maxoduke.mods.potioncauldron.networking.payloads.ParticlePayload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,6 +15,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Registry;
@@ -23,9 +24,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public class FabricInitializer implements ModInitializer, ClientModInitializer
 {
-    public static final ResourceLocation CONFIG_CHANNEL = new ResourceLocation(PotionCauldron.MOD_ID, "config_channel");
-    public static final ResourceLocation PARTICLES_CHANNEL = new ResourceLocation(PotionCauldron.MOD_ID, "particles_channel");
-
     static
     {
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(PotionCauldron.MOD_ID, PotionCauldron.BLOCK_NAME), PotionCauldron.BLOCK);
@@ -36,6 +34,9 @@ public class FabricInitializer implements ModInitializer, ClientModInitializer
     public void onInitialize()
     {
         PotionCauldronBlockInteraction.bootstrap();
+
+        PayloadTypeRegistry.playS2C().register(ClientConfigPayload.TYPE, ClientConfigPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(ParticlePayload.TYPE, ParticlePayload.CODEC);
 
         CommandRegistrationCallback.EVENT.register(CommandHandlers::register);
         ServerLifecycleEvents.SERVER_STARTING.register(ServerNetworking::serverStarting);
@@ -48,9 +49,9 @@ public class FabricInitializer implements ModInitializer, ClientModInitializer
     {
         BlockEntityRenderers.register(PotionCauldron.BLOCK_ENTITY, PotionCauldronBlockEntityRenderer::new);
 
-        ClientPlayNetworking.registerGlobalReceiver(CONFIG_CHANNEL, (client, handler, buf, responseSender) -> ClientNetworking.receiveConfigFromServer(ClientConfig.fromBuf(buf)));
-        ClientPlayNetworking.registerGlobalReceiver(PARTICLES_CHANNEL, (client, handler, buf, responseSender) -> ClientNetworking.receiveParticlesFromServer(ParticlePacket.fromBuf(buf)));
+        ClientPlayNetworking.registerGlobalReceiver(ClientConfigPayload.TYPE, (payload, context) -> ClientNetworking.receiveConfigFromServer(payload));
+        ClientPlayNetworking.registerGlobalReceiver(ParticlePayload.TYPE, (payload, context) -> ClientNetworking.receiveParticlesFromServer(payload));
 
-        ClientPlayConnectionEvents.DISCONNECT.register(CONFIG_CHANNEL, (handler, client) -> ClientNetworking.clientDisconnected());
+        ClientPlayConnectionEvents.DISCONNECT.register(PotionCauldron.CONFIG_CHANNEL, (handler, client) -> ClientNetworking.clientDisconnected());
     }
 }

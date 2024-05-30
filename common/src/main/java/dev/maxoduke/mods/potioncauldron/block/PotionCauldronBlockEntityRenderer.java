@@ -8,10 +8,11 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
@@ -32,9 +33,11 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<Po
         if (liquidLevel == 0)
             return;
 
-        Potion potion = entity.getPotion();
+        Holder<Potion> potion = entity.getPotion();
+        if (potion == null)
+            return;
 
-        int color = PotionUtils.getColor(potion);
+        int color = PotionContents.getColor(potion.value().getEffects());
         int red = color >> 16 & 255;
         int green = color >> 8 & 255;
         int blue = color & 255;
