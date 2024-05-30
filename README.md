@@ -16,10 +16,9 @@
 <img alt="fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">
 <img alt="quilt" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/quilt_vector.svg">
 <img alt="forge" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg">
-<br />
 
 ### Where is the updated Forge version?
-- The mod hasn't been updated to Forge 1.20.6 becuase Mixins are broken on Forge 1.20.6. Untill and unless this problem is fixed, I will not be bothering with Forge.
+- The mod hasn't been updated to Forge 1.20.6 because Mixins are broken on Forge 1.20.6. Untill and unless this problem is fixed, I will not be bothering with Forge.
 
 ### Requirements
 - **Fabric:** <a target="_blank" href="https://modrinth.com/mod/fabric-api">Fabric API</a> (Optionally <a target="_blank" href="https://modrinth.com/mod/modmenu">Mod Menu</a> for config GUI)
@@ -33,8 +32,6 @@
 ### Configuration
 - File Location: **_.minecraft/config/potion-cauldron.json_**
 - On Fabric/Quilt, GUI is available through <a target="_blank" href="https://modrinth.com/mod/modmenu">Mod Menu</a>
-
-
 - Changing config doesn't require restarting your game (or server).
     - On single player and LAN hosted worlds:
         - When using the GUI, clicking the "Save" button will sync with all connected clients.
@@ -42,8 +39,6 @@
     - On dedicated servers, after changing the config:
         - Use the "/potioncauldron config reload" command on the server console.
         - OP players can also use the above command in-game.
-
-
 - Available configuration options :
     - **Evaporate if different potions or liquids are mixed**
         - **ON:** If a player tries to put a different potion or liquid (water or lava) in a potion cauldron, the liquids from both the cauldron and the hand will evaporate and disappear.
