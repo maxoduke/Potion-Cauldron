@@ -1,0 +1,8 @@
+{
+    "potion_evaporates": {
+        "sounds": [
+            "random/fizz"
+        ],
+        "subtitle": "subtitle.potionEvaporates"
+    }
+}
