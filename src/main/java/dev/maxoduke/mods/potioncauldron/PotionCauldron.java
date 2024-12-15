@@ -1,20 +1,49 @@
 package dev.maxoduke.mods.potioncauldron;
 
-import dev.maxoduke.mods.potioncauldron.block.PotionCauldronBlock;
-import dev.maxoduke.mods.potioncauldron.block.PotionCauldronBlockEntity;
-import dev.maxoduke.mods.potioncauldron.block.PotionCauldronBlockInteraction;
+import dev.maxoduke.mods.potioncauldron.block.*;
+import dev.maxoduke.mods.potioncauldron.commands.CommandHandlers;
 import dev.maxoduke.mods.potioncauldron.config.ConfigManager;
+import dev.maxoduke.mods.potioncauldron.config.gui.ConfigScreen;
+import dev.maxoduke.mods.potioncauldron.networking.ClientNetworking;
+import dev.maxoduke.mods.potioncauldron.networking.NetworkHandler;
+import dev.maxoduke.mods.potioncauldron.networking.ServerNetworking;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@SuppressWarnings({ "SpellCheckingInspection", "DataFlowIssue" })
+import java.util.Set;
+
+@SuppressWarnings({ "SpellCheckingInspection" })
+@Mod(PotionCauldron.MOD_ID)
 public class PotionCauldron
 {
+    private static FMLJavaModLoadingContext context;
+
     public static final String MOD_ID = "potioncauldron";
     public static final String MOD_NAME = "Potion Cauldron";
     public static final Logger LOG = LogManager.getLogger(MOD_NAME);
@@ -22,23 +51,106 @@ public class PotionCauldron
     public static final String BLOCK_NAME = "potion_cauldron";
     public static final String BLOCK_ENTITY_NAME = "potion_cauldron_block_entity";
     public static final String POTION_EVAPORATES_SOUND_NAME = "potion_evaporates";
-    public static final ResourceLocation POTION_EVAPORATES_SOUND_ID = ResourceLocation.fromNamespaceAndPath(MOD_ID, POTION_EVAPORATES_SOUND_NAME);
 
+    public static final ResourceLocation POTION_EVAPORATES_SOUND_ID = ResourceLocation.fromNamespaceAndPath(MOD_ID, POTION_EVAPORATES_SOUND_NAME);
     public static final ResourceLocation CONFIG_CHANNEL = ResourceLocation.fromNamespaceAndPath(PotionCauldron.MOD_ID, "config_channel");
     public static final ResourceLocation PARTICLES_CHANNEL = ResourceLocation.fromNamespaceAndPath(PotionCauldron.MOD_ID, "particles_channel");
 
-    public static final PotionCauldronBlock BLOCK;
-    public static final BlockEntityType<PotionCauldronBlockEntity> BLOCK_ENTITY;
-    public static final SoundEvent POTION_EVAPORATES_SOUND_EVENT;
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PotionCauldron.MOD_ID);
+    private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, PotionCauldron.MOD_ID);
+    private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, PotionCauldron.MOD_ID);
 
-    public static final ConfigManager CONFIG_MANAGER;
+    public static final RegistryObject<PotionCauldronBlock> BLOCK = BLOCKS.register(
+        BLOCK_NAME,
+        () -> new PotionCauldronBlock(
+            PotionCauldronBlockInteraction.INTERACTION_MAP,
+            BlockBehaviour.Properties
+                .ofFullCopy(Blocks.CAULDRON)
+                .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MOD_ID, BLOCK_NAME)))
+        )
+    );
 
-    static
+    public static final RegistryObject<BlockEntityType<PotionCauldronBlockEntity>> BLOCK_ENTITY = BLOCK_ENTITIES.register(
+        BLOCK_ENTITY_NAME,
+        () -> new BlockEntityType<>(PotionCauldronBlockEntity::new, Set.of(BLOCK.get()))
+    );
+
+    public static final RegistryObject<SoundEvent> POTION_EVAPORATES_SOUND_EVENT = SOUND_EVENTS.register(
+        POTION_EVAPORATES_SOUND_NAME,
+        () -> SoundEvent.createVariableRangeEvent(POTION_EVAPORATES_SOUND_ID)
+    );
+
+    public static final ConfigManager CONFIG_MANAGER = new ConfigManager();
+
+    public PotionCauldron(FMLJavaModLoadingContext context)
     {
-        BLOCK = new PotionCauldronBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), PotionCauldronBlockInteraction.INTERACTION_MAP);
-        BLOCK_ENTITY = BlockEntityType.Builder.of(PotionCauldronBlockEntity::new, PotionCauldron.BLOCK).build(null);
-        POTION_EVAPORATES_SOUND_EVENT = SoundEvent.createVariableRangeEvent(POTION_EVAPORATES_SOUND_ID);
+        PotionCauldron.context = context;
 
-        CONFIG_MANAGER = new ConfigManager();
+        CauldronInteractionInjector.injectIntoEmptyPotionInteraction();
+        PotionCauldronBlockInteraction.bootstrap();
+
+        NetworkHandler.register();
+
+        IEventBus modEventBus = context.getModEventBus();
+        BLOCKS.register(modEventBus);
+        BLOCK_ENTITIES.register(modEventBus);
+        SOUND_EVENTS.register(modEventBus);
+
+        MinecraftForge.EVENT_BUS.register(this);
+        modEventBus.addListener(this::registerBlockEntityRenderers);
+    }
+
+    @Mod.EventBusSubscriber(modid = PotionCauldron.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents
+    {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event)
+        {
+            context.registerExtensionPoint(
+                ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new ConfigScreenHandler.ConfigScreenFactory((mc, screen) -> ConfigScreen.create(screen))
+            );
+        }
+    }
+
+    @Mod.EventBusSubscriber(modid = PotionCauldron.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+    public static class ClientModNetworkEvents
+    {
+        @SubscribeEvent
+        public static void clientDisconnected(ClientPlayerNetworkEvent.LoggingOut event)
+        {
+            ClientNetworking.clientDisconnected();
+        }
+    }
+
+    @SubscribeEvent
+    public void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event)
+    {
+        event.registerBlockEntityRenderer(PotionCauldron.BLOCK_ENTITY.get(), PotionCauldronBlockEntityRenderer::new);
+    }
+
+    @SubscribeEvent
+    public void registerCommands(RegisterCommandsEvent event)
+    {
+        CommandHandlers.register(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection());
+    }
+
+    @SubscribeEvent
+    public void serverStarting(ServerStartingEvent event)
+    {
+        ServerNetworking.serverStarting(event.getServer());
+    }
+
+    @SubscribeEvent
+    public void serverStopping(ServerStoppingEvent event)
+    {
+        ServerNetworking.serverStopping();
+    }
+
+    @SubscribeEvent
+    public void playerJoined(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        ServerNetworking.sendConfigToClient(player);
     }
 }

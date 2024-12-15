@@ -6,25 +6,25 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
+import java.util.OptionalInt;
+
 public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<PotionCauldronBlockEntity>
 {
+    @SuppressWarnings("deprecation")
+    private static final Material WATER_MATERIAL = new Material(TextureAtlas.LOCATION_BLOCKS, ResourceLocation.withDefaultNamespace("block/water_still"));
     private static final float[] FLUID_HEIGHT = { 0, 0.5625f, 0.75f, 0.9375f };
-    private static final Material WATER_MATERIAL = new Material(InventoryMenu.BLOCK_ATLAS, ResourceLocation.withDefaultNamespace("block/water_still"));
 
-    public PotionCauldronBlockEntityRenderer(BlockEntityRendererProvider.Context ignored)
-    {
-
-    }
+    public PotionCauldronBlockEntityRenderer(BlockEntityRendererProvider.Context ignored) { }
 
     @Override
     public void render(PotionCauldronBlockEntity entity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay)
@@ -37,7 +37,11 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<Po
         if (potion == null)
             return;
 
-        int color = PotionContents.getColor(potion.value().getEffects());
+        OptionalInt particleColor = PotionContents.getColorOptional(potion.value().getEffects());
+        if (particleColor.isEmpty())
+            return;
+
+        int color = particleColor.getAsInt();
         int red = color >> 16 & 255;
         int green = color >> 8 & 255;
         int blue = color & 255;

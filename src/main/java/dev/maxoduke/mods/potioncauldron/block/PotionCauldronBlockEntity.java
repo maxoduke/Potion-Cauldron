@@ -27,7 +27,7 @@ public class PotionCauldronBlockEntity extends BlockEntity
 
     public PotionCauldronBlockEntity(BlockPos blockPos, BlockState blockState)
     {
-        super(PotionCauldron.BLOCK_ENTITY, blockPos, blockState);
+        super(PotionCauldron.BLOCK_ENTITY.get(), blockPos, blockState);
 
         potion = Potions.FIRE_RESISTANCE;
         potionType = BuiltInRegistries.ITEM.getKey(Items.POTION).toString();
@@ -48,7 +48,7 @@ public class PotionCauldronBlockEntity extends BlockEntity
         if (potionNameResourceLocation == null)
             return;
 
-        Optional<Holder.Reference<Potion>> holder = BuiltInRegistries.POTION.getHolder(potionNameResourceLocation);
+        Optional<Holder.Reference<Potion>> holder = BuiltInRegistries.POTION.get(potionNameResourceLocation);
         if (holder.isEmpty())
             return;
 

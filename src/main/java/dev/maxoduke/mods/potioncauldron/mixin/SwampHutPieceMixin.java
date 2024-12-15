@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-@SuppressWarnings({ "DataFlowIssue", "UnreachableCode" })
+@SuppressWarnings({ "DataFlowIssue" })
 @Mixin(SwampHutPiece.class)
 public class SwampHutPieceMixin
 {
@@ -41,7 +41,7 @@ public class SwampHutPieceMixin
         if (potionResource == null)
             return;
 
-        Optional<Holder.Reference<Potion>> randomPotion = BuiltInRegistries.POTION.getHolder(potionResource);
+        Optional<Holder.Reference<Potion>> randomPotion = BuiltInRegistries.POTION.get(potionResource);
         String randomPotionType = PotionRandomizer.getRandomPotionType();
         Integer randomPotionLevel = PotionRandomizer.getRandomPotionLevel();
 
@@ -50,7 +50,7 @@ public class SwampHutPieceMixin
 
         SwampHutPiece swampHut = (SwampHutPiece) ((Object) this);
         // For some reason, IntelliJ thinks all lines after this comment is unreachable code because why not ¯\_(ツ)_/¯
-        swampHut.placeBlock(level, PotionCauldron.BLOCK.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, randomPotionLevel), 4, 2, 6, box);
+        swampHut.placeBlock(level, PotionCauldron.BLOCK.get().defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, randomPotionLevel), 4, 2, 6, box);
 
         PotionCauldronBlockEntity blockEntity = (PotionCauldronBlockEntity) level.getBlockEntity(swampHut.getWorldPos(4, 2, 6));
         blockEntity.setPotion(randomPotion.get());

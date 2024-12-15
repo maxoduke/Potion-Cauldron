@@ -68,7 +68,12 @@ public class ParticlePayload implements CustomPacketPayload
         return TYPE;
     }
 
-    public SimpleParticleType getParticleType() { return (SimpleParticleType) BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.parse(particleType)); }
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public SimpleParticleType getParticleType()
+    {
+        return (SimpleParticleType) (BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.parse(particleType)).get().get());
+    }
+
     public BlockPos getBlockPos() { return blockPos; }
     public int getColor() { return color; }
     public boolean shouldGenerateMultiple() { return generateMultiple; }

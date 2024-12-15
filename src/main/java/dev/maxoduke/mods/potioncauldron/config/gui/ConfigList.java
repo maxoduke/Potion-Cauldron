@@ -10,6 +10,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @SuppressWarnings("DuplicatedCode")
 public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
@@ -131,9 +133,9 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
     }
 
     @Override
-    protected int getScrollbarPosition()
+    protected int scrollBarX()
     {
-        return super.getScrollbarPosition() + 50;
+        return super.scrollBarX() + 50;
     }
 
     @Override
@@ -304,13 +306,13 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
                 return;
             }
 
-            Potion potion = BuiltInRegistries.POTION.get(
+            Optional<Holder.Reference<Potion>> potion = BuiltInRegistries.POTION.get(
                 (!potionName.contains(":"))
                     ? ResourceLocation.withDefaultNamespace(potionName)
                     : ResourceLocation.parse(potionName)
             );
 
-            if (potion == null)
+            if (potion.isEmpty())
                 throw new InvalidConfigValueException("Invalid potion name specified");
 
             potionName = potionName.replace("minecraft:", "");
