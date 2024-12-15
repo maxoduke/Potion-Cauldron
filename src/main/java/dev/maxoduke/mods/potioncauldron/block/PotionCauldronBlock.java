@@ -6,6 +6,7 @@ import dev.maxoduke.mods.potioncauldron.util.ParticleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
@@ -28,9 +29,11 @@ import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.OptionalInt;
+
 public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityBlock
 {
-    public PotionCauldronBlock(Properties properties, CauldronInteraction.InteractionMap interactionMap)
+    public PotionCauldronBlock(CauldronInteraction.InteractionMap interactionMap, Properties properties)
     {
         super(Biome.Precipitation.RAIN, interactionMap, properties);
     }
@@ -68,7 +71,7 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
         if (livingEntity.isOnFire())
         {
             livingEntity.clearFire();
-            if (livingEntity.mayInteract(level, pos))
+            if (livingEntity.mayInteract((ServerLevel) level, pos))
                 this.handleEntityOnFireInside(state, level, pos);
         }
 
@@ -118,11 +121,15 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
         if (potion == null)
             return;
 
-        ParticleUtils.generatePotionParticles(level, pos, PotionContents.getColor(potion.value().getEffects()), false);
+        OptionalInt particleColor = PotionContents.getColorOptional(potion.value().getEffects());
+        if (particleColor.isEmpty())
+            return;
+
+        ParticleUtils.generatePotionParticles(level, pos, particleColor.getAsInt(), false);
     }
 
     @Override
-    public @NotNull ItemStack getCloneItemStack(@NotNull LevelReader reader, @NotNull BlockPos blockPos, @NotNull BlockState blockState)
+    public @NotNull ItemStack getCloneItemStack(@NotNull LevelReader reader, @NotNull BlockPos blockPos, @NotNull BlockState blockState, boolean bl)
     {
         return new ItemStack(Items.CAULDRON);
     }

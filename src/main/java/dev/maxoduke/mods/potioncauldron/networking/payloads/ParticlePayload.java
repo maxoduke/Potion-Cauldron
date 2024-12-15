@@ -2,6 +2,8 @@ package dev.maxoduke.mods.potioncauldron.networking.payloads;
 
 import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 public class ParticlePayload implements CustomPacketPayload
 {
@@ -70,7 +73,15 @@ public class ParticlePayload implements CustomPacketPayload
         return TYPE;
     }
 
-    public SimpleParticleType getParticleType() { return (SimpleParticleType) BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.parse(particleType)); }
+    @SuppressWarnings("OptionalIsPresent")
+    public Optional<SimpleParticleType> getParticleType()
+    {
+        Optional<Holder.Reference<ParticleType<?>>> holder = BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.parse(particleType));
+        if (holder.isEmpty())
+            return Optional.empty();
+
+        return Optional.of((SimpleParticleType) holder.get().value());
+    }
     public BlockPos getBlockPos() { return blockPos; }
     public int getColor() { return color; }
     public boolean shouldGenerateMultiple() { return generateMultiple; }

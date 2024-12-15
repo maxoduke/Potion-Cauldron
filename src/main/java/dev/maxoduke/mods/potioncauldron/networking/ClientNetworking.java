@@ -9,6 +9,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.Level;
 
+import java.util.Optional;
+
 public class ClientNetworking
 {
     public static void clientDisconnected()
@@ -24,8 +26,11 @@ public class ClientNetworking
     public static void receiveParticlesFromServer(ParticlePayload particleInfo)
     {
         Level level = Minecraft.getInstance().level;
-        SimpleParticleType particleType = particleInfo.getParticleType();
+        Optional<SimpleParticleType> particleTypeHolder = particleInfo.getParticleType();
+        if (particleTypeHolder.isEmpty())
+            return;
 
+        SimpleParticleType particleType = particleTypeHolder.get();
         if (particleType == ParticleTypes.EFFECT)
             ParticleUtils.generatePotionParticles(level, particleInfo.getBlockPos(), particleInfo.getColor(), particleInfo.shouldGenerateMultiple());
         else if (particleType == ParticleTypes.POOF)

@@ -245,7 +245,7 @@ public class ServerConfig implements IConfig
         }
         catch (Exception ex)
         {
-            PotionCauldron.LOG.error(String.format("Error saving Potion Cauldron config: %s", ex.getMessage()));
+            PotionCauldron.LOG.error("Error saving Potion Cauldron config: {}", ex.getMessage());
         }
     }
 

@@ -23,7 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-@SuppressWarnings({ "DataFlowIssue", "UnreachableCode" })
 @Mixin(SwampHutPiece.class)
 public class SwampHutPieceMixin
 {
@@ -41,7 +40,7 @@ public class SwampHutPieceMixin
         if (potionResource == null)
             return;
 
-        Optional<Holder.Reference<Potion>> randomPotion = BuiltInRegistries.POTION.getHolder(potionResource);
+        Optional<Holder.Reference<Potion>> randomPotion = BuiltInRegistries.POTION.get(potionResource);
         String randomPotionType = PotionRandomizer.getRandomPotionType();
         Integer randomPotionLevel = PotionRandomizer.getRandomPotionLevel();
 
@@ -52,6 +51,9 @@ public class SwampHutPieceMixin
         swampHut.placeBlock(level, PotionCauldron.BLOCK.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, randomPotionLevel), 4, 2, 6, box);
 
         PotionCauldronBlockEntity blockEntity = (PotionCauldronBlockEntity) level.getBlockEntity(swampHut.getWorldPos(4, 2, 6));
+        if (blockEntity == null)
+            return;
+
         blockEntity.setPotion(randomPotion.get());
         blockEntity.setPotionType(randomPotionType);
     }
