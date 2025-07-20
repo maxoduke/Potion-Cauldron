@@ -13,7 +13,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
 import java.util.OptionalInt;
@@ -27,13 +27,13 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<Po
     public PotionCauldronBlockEntityRenderer(BlockEntityRendererProvider.Context ignored) { }
 
     @Override
-    public void render(PotionCauldronBlockEntity entity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay)
+    public void render(PotionCauldronBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay, Vec3 vec3)
     {
-        int liquidLevel = entity.getBlockState().getValue(PotionCauldronBlock.LEVEL);
+        int liquidLevel = blockEntity.getBlockState().getValue(PotionCauldronBlock.LEVEL);
         if (liquidLevel == 0)
             return;
 
-        Holder<Potion> potion = entity.getPotion();
+        Holder<Potion> potion = blockEntity.getPotion();
         if (potion == null)
             return;
 
