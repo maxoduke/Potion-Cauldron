@@ -13,6 +13,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
@@ -27,21 +28,21 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<Po
     public PotionCauldronBlockEntityRenderer(BlockEntityRendererProvider.Context ignored) { }
 
     @Override
-    public void render(PotionCauldronBlockEntity entity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay)
+    public void render(PotionCauldronBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay, @NotNull Vec3 vec3)
     {
-        int liquidLevel = entity.getBlockState().getValue(PotionCauldronBlock.LEVEL);
+        int liquidLevel = blockEntity.getBlockState().getValue(PotionCauldronBlock.LEVEL);
         if (liquidLevel == 0)
             return;
 
-        Holder<Potion> potion = entity.getPotion();
+        Holder<Potion> potion = blockEntity.getPotion();
         if (potion == null)
             return;
 
-        OptionalInt particleColor = PotionContents.getColorOptional(potion.value().getEffects());
-        if (particleColor.isEmpty())
+        OptionalInt spriteColor = PotionContents.getColorOptional(potion.value().getEffects());
+        if (spriteColor.isEmpty())
             return;
 
-        int color = particleColor.getAsInt();
+        int color = spriteColor.getAsInt();
         int red = color >> 16 & 255;
         int green = color >> 8 & 255;
         int blue = color & 255;

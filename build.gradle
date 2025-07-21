@@ -4,7 +4,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+    id 'net.minecraftforge.gradle' version '[6.0.36,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
@@ -12,7 +12,7 @@ version = mod_version
 group = mod_group_id
 
 base {
-    archivesName = "${mod_id}-forge"
+    archivesName = "${jar_name}-forge"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -52,9 +52,6 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-
-    // Hack fix for now, force jopt-simple to be exactly 5.0.4 because Mojang ships that version, but some transitive dependencies request 6.0+ 
-    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
 
 mixin {

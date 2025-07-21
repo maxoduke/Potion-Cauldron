@@ -15,6 +15,8 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,9 +44,14 @@ public class PotionCauldronBlockEntity extends BlockEntity
     public void setPotionType(String potionType) { this.potionType = potionType; }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.@NotNull Provider provider)
+    public void loadAdditional(ValueInput valueInput)
     {
-        ResourceLocation potionNameResourceLocation = ResourceLocation.tryParse(tag.getString("PotionName"));
+        Optional<String> optionalOptionNameResourceLocation = valueInput.getString("PotionName");
+        Optional<String> optionalPotionType = valueInput.getString("PotionType");
+        if (optionalOptionNameResourceLocation.isEmpty() || optionalPotionType.isEmpty())
+            return;
+
+        ResourceLocation potionNameResourceLocation = ResourceLocation.tryParse(optionalOptionNameResourceLocation.get());
         if (potionNameResourceLocation == null)
             return;
 
@@ -53,11 +60,11 @@ public class PotionCauldronBlockEntity extends BlockEntity
             return;
 
         potion = holder.get();
-        potionType = tag.getString("PotionType");
+        potionType = optionalPotionType.get();
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider provider)
+    protected void saveAdditional(@NotNull ValueOutput valueOutput)
     {
         if (potion == null)
             return;
@@ -68,8 +75,8 @@ public class PotionCauldronBlockEntity extends BlockEntity
 
         String potionName = potionResource.toString();
 
-        tag.putString("PotionName", potionName);
-        tag.putString("PotionType", potionType);
+        valueOutput.putString("PotionName", potionName);
+        valueOutput.putString("PotionType", potionType);
     }
 
     @Override

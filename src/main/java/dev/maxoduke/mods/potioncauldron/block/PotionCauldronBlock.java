@@ -12,6 +12,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
@@ -60,9 +61,9 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
     }
 
     @Override
-    public void entityInside(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Entity entity)
+    public void entityInside(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Entity entity, @NotNull InsideBlockEffectApplier insideBlockEffectApplier)
     {
-        if (level.isClientSide || !(entity instanceof LivingEntity livingEntity) || !this.isEntityInsideContent(state, pos, entity))
+        if (level.isClientSide || !(entity instanceof LivingEntity livingEntity))
             return;
 
         if (livingEntity instanceof ArmorStand)
@@ -71,15 +72,15 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
         if (livingEntity.isOnFire())
         {
             livingEntity.clearFire();
-            if (livingEntity.mayInteract((ServerLevel) level, pos))
-                this.handleEntityOnFireInside(state, level, pos);
+            if (livingEntity.mayInteract((ServerLevel) level, blockPos))
+                this.handleEntityOnFireInside(blockState, level, blockPos);
         }
 
         ServerConfig serverConfig = PotionCauldron.CONFIG_MANAGER.serverConfig();
         if (!serverConfig.shouldApplyPotionEffectsToEntitiesInside())
             return;
 
-        PotionCauldronBlockEntity blockEntity = (PotionCauldronBlockEntity) level.getBlockEntity(pos);
+        PotionCauldronBlockEntity blockEntity = (PotionCauldronBlockEntity) level.getBlockEntity(blockPos);
         if (blockEntity == null)
             return;
 
@@ -103,7 +104,7 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
             boolean isPlayerAndCreative = isPlayer && ((ServerPlayer) livingEntity).isCreative();
 
             if (!isPlayer || !isPlayerAndCreative)
-                lowerFillLevel(level.getBlockState(pos), level, pos);
+                lowerFillLevel(level.getBlockState(blockPos), level, blockPos);
 
             MobEffectInstance effectInstance = new MobEffectInstance(potionEffect.getEffect(), duration, potionEffect.getAmplifier());
             livingEntity.addEffect(effectInstance);

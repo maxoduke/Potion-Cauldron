@@ -20,13 +20,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.bus.BusGroup;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -38,7 +37,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Set;
 
-@SuppressWarnings({ "SpellCheckingInspection" })
+@SuppressWarnings({ "SpellCheckingInspection", "unused" })
 @Mod(PotionCauldron.MOD_ID)
 public class PotionCauldron
 {
@@ -91,13 +90,16 @@ public class PotionCauldron
 
         NetworkHandler.register();
 
-        IEventBus modEventBus = context.getModEventBus();
-        BLOCKS.register(modEventBus);
-        BLOCK_ENTITIES.register(modEventBus);
-        SOUND_EVENTS.register(modEventBus);
+        BusGroup modBusGroup = context.getModBusGroup();
+        BLOCKS.register(modBusGroup);
+        BLOCK_ENTITIES.register(modBusGroup);
+        SOUND_EVENTS.register(modBusGroup);
 
-        MinecraftForge.EVENT_BUS.register(this);
-        modEventBus.addListener(this::registerBlockEntityRenderers);
+        EntityRenderersEvent.RegisterRenderers.getBus(modBusGroup).addListener(this::registerBlockEntityRenderers);
+        RegisterCommandsEvent.BUS.addListener(this::registerCommands);
+        ServerStartingEvent.BUS.addListener(this::serverStarting);
+        ServerStoppingEvent.BUS.addListener(this::serverStopping);
+        PlayerEvent.PlayerLoggedInEvent.BUS.addListener(this::playerJoined);
     }
 
     @Mod.EventBusSubscriber(modid = PotionCauldron.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

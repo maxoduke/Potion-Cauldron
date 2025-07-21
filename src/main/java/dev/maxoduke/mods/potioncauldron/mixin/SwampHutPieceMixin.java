@@ -49,7 +49,6 @@ public class SwampHutPieceMixin
             return;
 
         SwampHutPiece swampHut = (SwampHutPiece) ((Object) this);
-        // For some reason, IntelliJ thinks all lines after this comment is unreachable code because why not ¯\_(ツ)_/¯
         swampHut.placeBlock(level, PotionCauldron.BLOCK.get().defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, randomPotionLevel), 4, 2, 6, box);
 
         PotionCauldronBlockEntity blockEntity = (PotionCauldronBlockEntity) level.getBlockEntity(swampHut.getWorldPos(4, 2, 6));

@@ -97,7 +97,7 @@ public class PotionCauldronBlockInteraction
         PotionContents potionContents = itemStack.get(DataComponents.POTION_CONTENTS);
         if (potionContents == null)
             return InteractionResult.PASS;
-        
+
         Optional<Holder<Potion>> potionHolder = potionContents.potion();
         if (potionHolder.isEmpty())
             return InteractionResult.PASS;
