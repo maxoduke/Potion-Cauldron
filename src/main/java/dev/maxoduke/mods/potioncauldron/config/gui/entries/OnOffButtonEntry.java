@@ -20,7 +20,7 @@ public class OnOffButtonEntry extends ConfigList.Entry
 
     public OnOffButtonEntry(Font font, Component component, boolean selected, CycleButton.OnValueChange<Boolean> onChange)
     {
-        label = new StringWidget(0, 0, 270, 20, component, font).alignLeft();
+        label = new StringWidget(0, 0, 270, 20, component, font);
         cycleButton = CycleButton
             .onOffBuilder(selected)
             .displayOnlyValue()
@@ -28,8 +28,11 @@ public class OnOffButtonEntry extends ConfigList.Entry
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
+        final int left = super.getX();
+        final int top = super.getY();
+
         label.setX(left);
         label.setY(top);
         label.render(guiGraphics, mouseX, mouseY, partialTick);

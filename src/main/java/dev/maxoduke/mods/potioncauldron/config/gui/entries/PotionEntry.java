@@ -34,8 +34,8 @@ public class PotionEntry extends ConfigList.Entry
         this.potionName = potionName;
         String _potionChance = BigDecimal.valueOf(potionChance * 100).stripTrailingZeros().toPlainString();
 
-        potionNameWidget = new StringWidget(150, 20, Component.literal(potionName), font).alignLeft();
-        potionChanceWidget = new StringWidget(40, 20, Component.literal(_potionChance), font).alignLeft();
+        potionNameWidget = new StringWidget(150, 20, Component.literal(potionName), font);
+        potionChanceWidget = new StringWidget(40, 20, Component.literal(_potionChance), font);
 
         removeButton = Button.builder(REMOVE_SIGN, ignored -> removeClickedListener.accept(this))
             .tooltip(Tooltip.create(REMOVE))
@@ -44,8 +44,11 @@ public class PotionEntry extends ConfigList.Entry
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
+        final int left = super.getX();
+        final int top = super.getY();
+
         potionNameWidget.setX(left + 4 + leftIndent);
         potionNameWidget.setY(top);
         potionNameWidget.render(guiGraphics, mouseX, mouseY, partialTick);

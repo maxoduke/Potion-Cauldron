@@ -24,15 +24,18 @@ public class LabelEntry extends ConfigList.Entry
     public LabelEntry(Font font, Component component, int leftIndent)
     {
         this.leftIndent = leftIndent;
-        label = new StringWidget(0, 0, 300, 20, component, font).alignLeft();
+        label = new StringWidget(0, 0, 300, 20, component, font);
 
         hasError = false;
         errorIcon = new StringWidget(ERROR_ICON, font);
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
+        final int left = super.getX();
+        final int top = super.getY();
+
         label.setX(left + leftIndent);
         label.setY(top);
         label.render(guiGraphics, mouseX, mouseY, partialTick);
