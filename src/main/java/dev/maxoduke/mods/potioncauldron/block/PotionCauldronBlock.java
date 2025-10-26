@@ -61,9 +61,9 @@ public class PotionCauldronBlock extends LayeredCauldronBlock implements EntityB
     }
 
     @Override
-    public void entityInside(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Entity entity, @NotNull InsideBlockEffectApplier insideBlockEffectApplier)
+    public void entityInside(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Entity entity, @NotNull InsideBlockEffectApplier insideBlockEffectApplier, boolean bl)
     {
-        if (level.isClientSide || !(entity instanceof LivingEntity livingEntity))
+        if (level.isClientSide() || !(entity instanceof LivingEntity livingEntity))
             return;
 
         if (livingEntity instanceof ArmorStand)

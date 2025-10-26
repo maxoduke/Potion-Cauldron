@@ -21,8 +21,11 @@ public class BlankEntry extends ConfigList.Entry
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
+        final int left = super.getX();
+        final int top = super.getY();
+
         emptyWidget.setX(left);
         emptyWidget.setY(top);
         emptyWidget.render(guiGraphics, mouseX, mouseY, partialTick);

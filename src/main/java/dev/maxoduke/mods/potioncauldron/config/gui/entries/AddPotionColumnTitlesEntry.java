@@ -24,14 +24,17 @@ public class AddPotionColumnTitlesEntry extends ConfigList.Entry
 
     public AddPotionColumnTitlesEntry(Font font, int leftIndent)
     {
-        potionName = new StringWidget(0, 0, 152, 20, POTION_NAME, font).alignLeft();
-        percentage = new StringWidget(0, 0, 40, 20, PERCENT_SIGN, font).alignLeft();
+        potionName = new StringWidget(0, 0, 152, 20, POTION_NAME, font);
+        percentage = new StringWidget(0, 0, 40, 20, PERCENT_SIGN, font);
         this.leftIndent = leftIndent;
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
+        final int left = super.getX();
+        final int top = super.getY();
+
         potionName.setX(left + leftIndent);
         potionName.setY(top);
         potionName.render(guiGraphics, mouseX, mouseY, partialTick);

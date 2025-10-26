@@ -95,7 +95,7 @@ public class PotionCauldron
         BLOCK_ENTITIES.register(modBusGroup);
         SOUND_EVENTS.register(modBusGroup);
 
-        EntityRenderersEvent.RegisterRenderers.getBus(modBusGroup).addListener(this::registerBlockEntityRenderers);
+        EntityRenderersEvent.RegisterRenderers.BUS.addListener(this::registerBlockEntityRenderers);
         RegisterCommandsEvent.BUS.addListener(this::registerCommands);
         ServerStartingEvent.BUS.addListener(this::serverStarting);
         ServerStoppingEvent.BUS.addListener(this::serverStopping);

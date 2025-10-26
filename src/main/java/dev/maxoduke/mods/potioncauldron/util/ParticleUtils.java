@@ -1,8 +1,8 @@
 package dev.maxoduke.mods.potioncauldron.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ParticleStatus;
 import net.minecraft.util.RandomSource;
@@ -37,14 +37,10 @@ public class ParticleUtils
                 return;
         }
 
-        float red = (color >> 16 & 255) / 255.0f;
-        float green = (color >> 8 & 255) / 255.0f;
-        float blue = (color & 255) / 255.0f;
-
         for (int i = 1; i <= numberOfParticles; i++)
         {
-            Particle particle = Minecraft.getInstance().particleEngine.createParticle(
-                ParticleTypes.EFFECT,
+            Minecraft.getInstance().particleEngine.createParticle(
+                ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, color),
                 pos.getX() + 0.45 + random.nextDouble() * 0.2,
                 pos.getY() + 1.0,
                 pos.getZ() + 0.45 + random.nextDouble() * 0.2,
@@ -52,9 +48,6 @@ public class ParticleUtils
                 1.3,
                 0.7
             );
-
-            assert particle != null;
-            particle.setColor(red, green, blue);
         }
     }
 

@@ -68,10 +68,13 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
 
     private final AddPotionEntry addPotionEntry;
 
+    private static final int ENTRY_HEIGHT = 25;
+    private static final int TOP = 50;
+
     public ConfigList(ConfigScreen screen, Font font, ServerConfig config, Runnable onChange)
     {
-        // super(Minecraft.getInstance(), screen.width, screen.height, 50, screen.height - 50);
-        super(Minecraft.getInstance(), screen.width, screen.height - 100, 50, 25);
+        // super(<MC Instance>, width, height, top, entryHeight)
+        super(Minecraft.getInstance(), screen.width, screen.height - 100, TOP, ENTRY_HEIGHT);
 
         this.config = config;
         this.font = font;
@@ -86,7 +89,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
 
         addEntry(new OnOffButtonEntry(font, EVAPORATE_POTION_WHEN_MIXED, evaporatePotionWhenMixed, this::toggleEvaporatePotionWhenMixed));
         addEntry(new OnOffButtonEntry(font, ALLOW_MERGING_POTIONS, allowMergingPotions, this::toggleAllowMergingPotions));
-
+//
         addEntry(new OnOffButtonEntry(font, APPLY_POTION_EFFECTS, applyPotionEffects, this::toggleApplyPotionEffects));
         addEntry(new OnOffButtonEntry(font, ALLOW_FILLING_WITH_WATER_DRIPS, allowFillingWithWaterDrips, this::toggleAllowFillingWithWaterDrips));
 

@@ -5,9 +5,11 @@ import dev.maxoduke.mods.potioncauldron.networking.payloads.ClientConfigPayload;
 import dev.maxoduke.mods.potioncauldron.networking.payloads.ParticlePayload;
 import dev.maxoduke.mods.potioncauldron.util.ParticleUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.Level;
+
+import java.util.Optional;
 
 public class ClientNetworking
 {
@@ -24,9 +26,12 @@ public class ClientNetworking
     public static void receiveParticlesFromServer(ParticlePayload particleInfo)
     {
         Level level = Minecraft.getInstance().level;
-        SimpleParticleType particleType = particleInfo.getParticleType();
+        Optional<ParticleType<?>> particleTypeHolder = particleInfo.getParticleType();
+        if (particleTypeHolder.isEmpty())
+            return;
 
-        if (particleType == ParticleTypes.EFFECT)
+        ParticleType<?> particleType = particleTypeHolder.get();
+        if (particleType == ParticleTypes.ENTITY_EFFECT)
             ParticleUtils.generatePotionParticles(level, particleInfo.getBlockPos(), particleInfo.getColor(), particleInfo.shouldGenerateMultiple());
         else if (particleType == ParticleTypes.POOF)
             ParticleUtils.generateEvaporationParticles(level, particleInfo.getBlockPos());

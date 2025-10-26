@@ -74,12 +74,12 @@ public class PotionCauldronBlockInteraction
         blockEntity.setPotion(potion);
         blockEntity.setPotionType(potionType);
 
-        if (level.isClientSide)
+        if (level.isClientSide())
             return InteractionResult.SUCCESS;
 
         OptionalInt particleColor = PotionContents.getColorOptional(potion.value().getEffects());
         if (particleColor.isPresent())
-            ServerNetworking.sendParticlesToClients(new ParticlePayload(ParticleTypes.EFFECT, blockPos, particleColor.getAsInt(), true));
+            ServerNetworking.sendParticlesToClients(new ParticlePayload(ParticleTypes.ENTITY_EFFECT, blockPos, particleColor.getAsInt(), true));
 
         player.setItemInHand(interactionHand, ItemUtils.createFilledResult(itemStack, player, new ItemStack(Items.GLASS_BOTTLE)));
         level.playSound(null, blockPos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0f, 1.0f);
@@ -126,14 +126,14 @@ public class PotionCauldronBlockInteraction
             blockEntity.setPotionType(potionTypeInHand);
         }
 
-        if (level.isClientSide)
+        if (level.isClientSide())
             return InteractionResult.SUCCESS;
 
         level.setBlockAndUpdate(blockPos, blockState.cycle(LayeredCauldronBlock.LEVEL));
 
         OptionalInt particleColor = PotionContents.getColorOptional(potionInCauldron.value().getEffects());
         if (particleColor.isPresent())
-            ServerNetworking.sendParticlesToClients(new ParticlePayload(ParticleTypes.EFFECT, blockPos, particleColor.getAsInt(), true));
+            ServerNetworking.sendParticlesToClients(new ParticlePayload(ParticleTypes.ENTITY_EFFECT, blockPos, particleColor.getAsInt(), true));
 
         player.setItemInHand(interactionHand, ItemUtils.createFilledResult(itemStack, player, new ItemStack(Items.GLASS_BOTTLE)));
         level.playSound(null, blockPos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0f, 1.0f);
@@ -164,12 +164,12 @@ public class PotionCauldronBlockInteraction
         if (potionTypeResourceLocation == null)
             return InteractionResult.PASS;
 
-        if (level.isClientSide)
+        if (level.isClientSide())
             return InteractionResult.SUCCESS;
 
         OptionalInt particleColor = PotionContents.getColorOptional(potion.value().getEffects());
         if (particleColor.isPresent())
-            ServerNetworking.sendParticlesToClients(new ParticlePayload(ParticleTypes.EFFECT, blockPos, particleColor.getAsInt(), true));
+            ServerNetworking.sendParticlesToClients(new ParticlePayload(ParticleTypes.ENTITY_EFFECT, blockPos, particleColor.getAsInt(), true));
 
         Optional<Holder.Reference<Item>> potionTypeHolder = BuiltInRegistries.ITEM.get(potionTypeResourceLocation);
         if (potionTypeHolder.isEmpty())
@@ -193,7 +193,7 @@ public class PotionCauldronBlockInteraction
         if (blockState.getValue(LayeredCauldronBlock.LEVEL) == 0)
             return InteractionResult.PASS;
 
-        if (level.isClientSide)
+        if (level.isClientSide())
             return InteractionResult.SUCCESS;
 
         HashMap<Integer, Integer> cauldronLevelToArrows = PotionCauldron.CONFIG_MANAGER.serverConfig().maxTippedArrowsPerLevel();
@@ -222,7 +222,7 @@ public class PotionCauldronBlockInteraction
 
         OptionalInt particleColor = PotionContents.getColorOptional(potion.value().getEffects());
         if (particleColor.isPresent())
-            ServerNetworking.sendParticlesToClients(new ParticlePayload(ParticleTypes.EFFECT, blockPos, particleColor.getAsInt(), true));
+            ServerNetworking.sendParticlesToClients(new ParticlePayload(ParticleTypes.ENTITY_EFFECT, blockPos, particleColor.getAsInt(), true));
 
         level.setBlockAndUpdate(blockPos, remainingCauldronLevels == 0 ? Blocks.CAULDRON.defaultBlockState() : blockState.setValue(PotionCauldronBlock.LEVEL, remainingCauldronLevels));
         if (!player.isCreative())
@@ -243,7 +243,7 @@ public class PotionCauldronBlockInteraction
         if (!PotionCauldron.CONFIG_MANAGER.clientOrServerConfig().shouldEvaporatePotionWhenMixed())
             return InteractionResult.PASS;
 
-        if (level.isClientSide)
+        if (level.isClientSide())
             return InteractionResult.SUCCESS;
 
         ServerNetworking.sendParticlesToClients(new ParticlePayload(ParticleTypes.POOF, blockPos));

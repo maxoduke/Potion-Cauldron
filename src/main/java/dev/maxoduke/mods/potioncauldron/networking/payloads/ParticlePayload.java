@@ -2,7 +2,8 @@ package dev.maxoduke.mods.potioncauldron.networking.payloads;
 
 import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -10,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 public class ParticlePayload implements CustomPacketPayload
 {
@@ -20,13 +22,13 @@ public class ParticlePayload implements CustomPacketPayload
     private final int color;
     private final boolean generateMultiple;
 
-    public ParticlePayload(SimpleParticleType particleType, BlockPos blockPos)
+    public ParticlePayload(ParticleType<?> particleType, BlockPos blockPos)
     {
         this(particleType, blockPos, 0, false);
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public ParticlePayload(SimpleParticleType particleType, BlockPos blockPos, int color, boolean generateMultiple)
+    public ParticlePayload(ParticleType<?> particleType, BlockPos blockPos, int color, boolean generateMultiple)
     {
         this.particleType = BuiltInRegistries.PARTICLE_TYPE.getKey(particleType).toString();
         this.blockPos = blockPos;
@@ -68,10 +70,14 @@ public class ParticlePayload implements CustomPacketPayload
         return TYPE;
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public SimpleParticleType getParticleType()
+    @SuppressWarnings("OptionalIsPresent")
+    public Optional<ParticleType<?>> getParticleType()
     {
-        return (SimpleParticleType) (BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.parse(particleType)).get().get());
+        Optional<Holder.Reference<ParticleType<?>>> holder = BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.parse(particleType));
+        if (holder.isEmpty())
+            return Optional.empty();
+
+        return Optional.of(holder.get().value());
     }
 
     public BlockPos getBlockPos() { return blockPos; }

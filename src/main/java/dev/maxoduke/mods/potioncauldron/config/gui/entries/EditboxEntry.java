@@ -25,7 +25,7 @@ public class EditboxEntry extends ConfigList.Entry
     {
         this.leftIndent = leftIndent;
 
-        name = new StringWidget(0, 0, 172, 20, component, font).alignLeft();
+        name = new StringWidget(0, 0, 172, 20, component, font);
         this.value = new EditBox(font, 0, 0, 30, 20, EMPTY);
 
         this.value.setValue(value);
@@ -34,8 +34,11 @@ public class EditboxEntry extends ConfigList.Entry
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
+        final int left = super.getX();
+        final int top = super.getY();
+
         name.setX(left + leftIndent);
         name.setY(top);
         name.render(guiGraphics, mouseX, mouseY, partialTick);
