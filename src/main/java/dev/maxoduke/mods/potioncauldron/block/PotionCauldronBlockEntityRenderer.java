@@ -84,8 +84,6 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<Po
         poseStack.pushPose();
         poseStack.translate(0, FLUID_HEIGHT[liquidLevel] + 0.001f, 0);
 
-        // Matrix4f matrix = poseStack.last().pose();
-
         float sizeFactor = 0.125f;
         float maxV = (water.getV1() - water.getV0()) * sizeFactor;
         float minV = (water.getV1() - water.getV0()) * (1 - sizeFactor);
