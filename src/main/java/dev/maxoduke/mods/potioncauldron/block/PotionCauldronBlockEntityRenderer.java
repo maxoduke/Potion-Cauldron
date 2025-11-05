@@ -1,6 +1,8 @@
 package dev.maxoduke.mods.potioncauldron.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -21,11 +23,16 @@ import org.joml.Matrix4f;
 
 import java.util.OptionalInt;
 
+@Environment(EnvType.CLIENT)
 public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<PotionCauldronBlockEntity, PotionCauldronBlockEntityRenderState>
 {
+    private static final float[] FLUID_HEIGHT = { 0, 0.5625f, 0.75f, 0.9375f };
+
     @SuppressWarnings("deprecation")
     private static final Material WATER_MATERIAL = new Material(TextureAtlas.LOCATION_BLOCKS, ResourceLocation.withDefaultNamespace("block/water_still"));
-    private static final float[] FLUID_HEIGHT = { 0, 0.5625f, 0.75f, 0.9375f };
+
+    @SuppressWarnings("deprecation")
+    private static final RenderType POTION_CAULDRON_BLOCK_RENDER_TYPE = RenderType.entityTranslucent(TextureAtlas.LOCATION_BLOCKS);
 
     public PotionCauldronBlockEntityRenderer(BlockEntityRendererProvider.Context ignored) { }
 
@@ -75,9 +82,9 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<Po
         TextureAtlasSprite water = Minecraft.getInstance().getAtlasManager().get(WATER_MATERIAL);
 
         poseStack.pushPose();
-        poseStack.translate(0, FLUID_HEIGHT[liquidLevel], 0);
+        poseStack.translate(0, FLUID_HEIGHT[liquidLevel] + 0.001f, 0);
 
-        Matrix4f matrix = poseStack.last().pose();
+        // Matrix4f matrix = poseStack.last().pose();
 
         float sizeFactor = 0.125f;
         float maxV = (water.getV1() - water.getV0()) * sizeFactor;
@@ -86,20 +93,38 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<Po
         final int PACKED_LIGHT = 15728880;
         final int PACKED_OVERLAY = OverlayTexture.NO_OVERLAY;
 
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderType.translucentMovingBlock(), (pose, consumer) ->
+        submitNodeCollector.submitCustomGeometry(poseStack, POTION_CAULDRON_BLOCK_RENDER_TYPE, (pose, consumer) ->
         {
+            Matrix4f matrix = pose.pose();
+
             consumer.addVertex(matrix, sizeFactor, 0, 1 - sizeFactor)
-                    .setColor(red, green, blue, alpha)
-                    .setUv(water.getU0(), water.getV0() + maxV)
-                    .setLight(PACKED_LIGHT)
-                    .setOverlay(PACKED_OVERLAY)
-                    .setNormal(1, 1, 1);
+                .setColor(red, green, blue, alpha)
+                .setUv(water.getU0(), water.getV0() + maxV)
+                .setLight(PACKED_LIGHT)
+                .setOverlay(PACKED_OVERLAY)
+                .setNormal(0, 1, 0);
 
-            consumer.addVertex(matrix, 1 - sizeFactor, 0, 1 - sizeFactor).setColor(red, green, blue, alpha).setUv(water.getU1(), water.getV0() + maxV).setLight(PACKED_LIGHT).setOverlay(PACKED_OVERLAY).setNormal(1, 1, 1);
-            consumer.addVertex(matrix, 1 - sizeFactor, 0, sizeFactor).setColor(red, green, blue, alpha).setUv(water.getU1(), water.getV0() + minV).setLight(PACKED_LIGHT).setOverlay(PACKED_OVERLAY).setNormal(1, 1, 1);
-            consumer.addVertex(matrix, sizeFactor, 0, sizeFactor).setColor(red, green, blue, alpha).setUv(water.getU0(), water.getV0() + minV).setLight(PACKED_LIGHT).setOverlay(PACKED_OVERLAY).setNormal(1, 1, 1);
+            consumer.addVertex(matrix, 1 - sizeFactor, 0, 1 - sizeFactor)
+                .setColor(red, green, blue, alpha)
+                .setUv(water.getU1(), water.getV0() + maxV)
+                .setLight(PACKED_LIGHT)
+                .setOverlay(PACKED_OVERLAY)
+                .setNormal(0, 1, 0);
+
+            consumer.addVertex(matrix, 1 - sizeFactor, 0, sizeFactor)
+                .setColor(red, green, blue, alpha)
+                .setUv(water.getU1(), water.getV0() + minV)
+                .setLight(PACKED_LIGHT)
+                .setOverlay(PACKED_OVERLAY)
+                .setNormal(0, 1, 0);
+
+            consumer.addVertex(matrix, sizeFactor, 0, sizeFactor)
+                .setColor(red, green, blue, alpha)
+                .setUv(water.getU0(), water.getV0() + minV)
+                .setLight(PACKED_LIGHT)
+                .setOverlay(PACKED_OVERLAY)
+                .setNormal(0, 1, 0);
         });
-
 
         poseStack.popPose();
     }
