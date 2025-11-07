@@ -9,8 +9,8 @@
 - Apply potion effect to any entities standing inside
 - Generates in swamp huts
 
-<img style="margin-top: 10px; margin-left: 30px" src="https://maxoduke.dev/assets/images/mods/potion-cauldron/step1.gif" alt="Image 1" width="500" />
-<img style="margin-top: 10px; margin-left: 30px" src="https://maxoduke.dev/assets/images/mods/potion-cauldron/step2.gif" alt="Image 2" width="500" />
+<img style="margin-top: 10px; margin-left: 30px" src="https://files.chimerasmp.online/assets/images/mods/potion-cauldron/step1.gif" alt="Image 1" width="500" />
+<img style="margin-top: 10px; margin-left: 30px" src="https://files.chimerasmp.online/assets/images/mods/potion-cauldron/step2.gif" alt="Image 2" width="500" />
 
 ### Supported loaders
 <img alt="fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">
