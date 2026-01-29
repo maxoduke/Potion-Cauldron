@@ -30,6 +30,7 @@ public class ConfigScreen extends Screen
     private final ServerConfig currentConfig;
     private final ServerConfig configToChange;
 
+    private StringWidget title;
     private StringWidget noticeIcon;
     private ConfigList configList;
     private Button saveButton;
@@ -49,7 +50,9 @@ public class ConfigScreen extends Screen
     {
         super.init();
 
-        noticeIcon = new StringWidget(width - 30, 18, 20, 10, NOTICE_ICON, font);
+        title = new StringWidget(width / 2 - 75, 20, 150, 10, TITLE, font);
+
+        noticeIcon = new StringWidget(width - 30, 20, 20, 10, NOTICE_ICON, font);
         noticeIcon.setTooltip(Tooltip.create(NOTICE_TOOLTIP));
 
         configList = new ConfigList(this, font, configToChange, this::updateButtonStates);
@@ -69,6 +72,7 @@ public class ConfigScreen extends Screen
             .pos(width / 2 + 60, height - 35)
             .build();
 
+        addWidget(title);
         addWidget(noticeIcon);
         addWidget(configList);
         addWidget(saveButton);
@@ -84,6 +88,8 @@ public class ConfigScreen extends Screen
         super.render(graphics, mouseX, mouseY, partialTick);
 
         graphics.drawCenteredString(font, TITLE, width / 2, 20, 0xFFFFFF);
+
+        title.render(graphics, mouseX, mouseY, partialTick);
         noticeIcon.render(graphics, mouseX, mouseY, partialTick);
 
         configList.render(graphics, mouseX, mouseY, partialTick);
