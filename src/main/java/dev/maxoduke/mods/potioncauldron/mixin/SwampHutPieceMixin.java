@@ -6,7 +6,7 @@ import dev.maxoduke.mods.potioncauldron.util.PotionRandomizer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.ChunkPos;
@@ -36,7 +36,7 @@ public class SwampHutPieceMixin
         if (randomPotionName == null)
             return;
 
-        ResourceLocation potionResource = ResourceLocation.tryParse(randomPotionName);
+        Identifier potionResource = Identifier.tryParse(randomPotionName);
         if (potionResource == null)
             return;
 

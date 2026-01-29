@@ -14,15 +14,16 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 @SuppressWarnings("DuplicatedCode")
-public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
+public class ConfigList extends ContainerObjectSelectionList<ConfigList.@NotNull Entry>
 {
     private static final Component EVAPORATE_POTION_WHEN_MIXED = Component.translatable("config.text.evaporatePotionWhenMixed");
     private static final Component ALLOW_MERGING_POTIONS = Component.translatable("config.text.allowMergingPotions");
@@ -311,8 +312,8 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
 
             Optional<Holder.Reference<Potion>> potion = BuiltInRegistries.POTION.get(
                 (!potionName.contains(":"))
-                    ? ResourceLocation.withDefaultNamespace(potionName)
-                    : ResourceLocation.parse(potionName)
+                    ? Identifier.withDefaultNamespace(potionName)
+                    : Identifier.parse(potionName)
             );
 
             if (potion.isEmpty())
@@ -369,7 +370,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.Entry>
         onChange.run();
     }
 
-    public static abstract class Entry extends ContainerObjectSelectionList.Entry<Entry>
+    public static abstract class Entry extends ContainerObjectSelectionList.Entry<@NotNull Entry>
     {
         public static final Component EMPTY = Component.literal("");
         protected static final Component ERROR_ICON = Component.literal("(!)").withStyle(Style.EMPTY.withColor(0xFF0000).applyFormat(ChatFormatting.UNDERLINE));
