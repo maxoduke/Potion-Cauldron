@@ -9,7 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
@@ -46,16 +46,16 @@ public class PotionCauldronBlockEntity extends BlockEntity
     @Override
     public void loadAdditional(ValueInput valueInput)
     {
-        Optional<String> optionalOptionNameResourceLocation = valueInput.getString("PotionName");
+        Optional<String> optionalOptionNameIdentifier = valueInput.getString("PotionName");
         Optional<String> optionalPotionType = valueInput.getString("PotionType");
-        if (optionalOptionNameResourceLocation.isEmpty() || optionalPotionType.isEmpty())
+        if (optionalOptionNameIdentifier.isEmpty() || optionalPotionType.isEmpty())
             return;
 
-        ResourceLocation potionNameResourceLocation = ResourceLocation.tryParse(optionalOptionNameResourceLocation.get());
-        if (potionNameResourceLocation == null)
+        Identifier potionNameIdentifier = Identifier.tryParse(optionalOptionNameIdentifier.get());
+        if (potionNameIdentifier == null)
             return;
 
-        Optional<Holder.Reference<Potion>> holder = BuiltInRegistries.POTION.get(potionNameResourceLocation);
+        Optional<Holder.Reference<Potion>> holder = BuiltInRegistries.POTION.get(potionNameIdentifier);
         if (holder.isEmpty())
             return;
 
@@ -69,7 +69,7 @@ public class PotionCauldronBlockEntity extends BlockEntity
         if (potion == null)
             return;
 
-        ResourceLocation potionResource = BuiltInRegistries.POTION.getKey(potion.value());
+        Identifier potionResource = BuiltInRegistries.POTION.getKey(potion.value());
         if (potionResource == null)
             return;
 
@@ -81,7 +81,7 @@ public class PotionCauldronBlockEntity extends BlockEntity
 
     @Override
     @Nullable
-    public Packet<ClientGamePacketListener> getUpdatePacket()
+    public Packet<@NotNull ClientGamePacketListener> getUpdatePacket()
     {
         return ClientboundBlockEntityDataPacket.create(this);
     }

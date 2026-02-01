@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ClientConfigPayload implements CustomPacketPayload, IConfig
 {
-    public static final CustomPacketPayload.Type<ClientConfigPayload> TYPE = new Type<>(PotionCauldron.CONFIG_CHANNEL);
+    public static final CustomPacketPayload.Type<@NotNull ClientConfigPayload> TYPE = new Type<>(PotionCauldron.CONFIG_CHANNEL);
 
     private final boolean evaporatePotionWhenMixed;
     private final boolean allowMergingPotions;
@@ -23,7 +23,7 @@ public class ClientConfigPayload implements CustomPacketPayload, IConfig
 
     @Override
     @NotNull
-    public Type<? extends CustomPacketPayload> type()
+    public Type<? extends @NotNull CustomPacketPayload> type()
     {
         return TYPE;
     }

@@ -9,7 +9,7 @@ import dev.maxoduke.mods.potioncauldron.networking.NetworkHandler;
 import dev.maxoduke.mods.potioncauldron.networking.ServerNetworking;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.Block;
@@ -34,6 +34,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -51,9 +52,9 @@ public class PotionCauldron
     public static final String BLOCK_ENTITY_NAME = "potion_cauldron_block_entity";
     public static final String POTION_EVAPORATES_SOUND_NAME = "potion_evaporates";
 
-    public static final ResourceLocation POTION_EVAPORATES_SOUND_ID = ResourceLocation.fromNamespaceAndPath(MOD_ID, POTION_EVAPORATES_SOUND_NAME);
-    public static final ResourceLocation CONFIG_CHANNEL = ResourceLocation.fromNamespaceAndPath(PotionCauldron.MOD_ID, "config_channel");
-    public static final ResourceLocation PARTICLES_CHANNEL = ResourceLocation.fromNamespaceAndPath(PotionCauldron.MOD_ID, "particles_channel");
+    public static final Identifier POTION_EVAPORATES_SOUND_ID = Identifier.fromNamespaceAndPath(MOD_ID, POTION_EVAPORATES_SOUND_NAME);
+    public static final Identifier CONFIG_CHANNEL = Identifier.fromNamespaceAndPath(PotionCauldron.MOD_ID, "config_channel");
+    public static final Identifier PARTICLES_CHANNEL = Identifier.fromNamespaceAndPath(PotionCauldron.MOD_ID, "particles_channel");
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PotionCauldron.MOD_ID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, PotionCauldron.MOD_ID);
@@ -65,11 +66,11 @@ public class PotionCauldron
             PotionCauldronBlockInteraction.INTERACTION_MAP,
             BlockBehaviour.Properties
                 .ofFullCopy(Blocks.CAULDRON)
-                .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MOD_ID, BLOCK_NAME)))
+                .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, BLOCK_NAME)))
         )
     );
 
-    public static final RegistryObject<BlockEntityType<PotionCauldronBlockEntity>> BLOCK_ENTITY = BLOCK_ENTITIES.register(
+    public static final RegistryObject<BlockEntityType<@NotNull PotionCauldronBlockEntity>> BLOCK_ENTITY = BLOCK_ENTITIES.register(
         BLOCK_ENTITY_NAME,
         () -> new BlockEntityType<>(PotionCauldronBlockEntity::new, Set.of(BLOCK.get()))
     );

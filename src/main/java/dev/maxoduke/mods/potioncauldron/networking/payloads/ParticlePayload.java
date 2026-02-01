@@ -7,7 +7,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class ParticlePayload implements CustomPacketPayload
 {
-    public static final Type<ParticlePayload> TYPE = new Type<>(PotionCauldron.PARTICLES_CHANNEL);
+    public static final Type<@NotNull ParticlePayload> TYPE = new Type<>(PotionCauldron.PARTICLES_CHANNEL);
 
     private final String particleType;
     private final BlockPos blockPos;
@@ -65,7 +65,7 @@ public class ParticlePayload implements CustomPacketPayload
 
     @Override
     @NotNull
-    public Type<? extends CustomPacketPayload> type()
+    public Type<? extends @NotNull CustomPacketPayload> type()
     {
         return TYPE;
     }
@@ -73,7 +73,7 @@ public class ParticlePayload implements CustomPacketPayload
     @SuppressWarnings("OptionalIsPresent")
     public Optional<ParticleType<?>> getParticleType()
     {
-        Optional<Holder.Reference<ParticleType<?>>> holder = BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.parse(particleType));
+        Optional<Holder.Reference<ParticleType<?>>> holder = BuiltInRegistries.PARTICLE_TYPE.get(Identifier.parse(particleType));
         if (holder.isEmpty())
             return Optional.empty();
 

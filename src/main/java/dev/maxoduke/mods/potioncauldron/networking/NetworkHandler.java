@@ -3,7 +3,7 @@ package dev.maxoduke.mods.potioncauldron.networking;
 import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import dev.maxoduke.mods.potioncauldron.networking.payloads.ClientConfigPayload;
 import dev.maxoduke.mods.potioncauldron.networking.payloads.ParticlePayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraftforge.network.*;
 
 @SuppressWarnings({ "deprecation" })
@@ -15,7 +15,7 @@ public class NetworkHandler
     static
     {
         INSTANCE = ChannelBuilder
-            .named(ResourceLocation.fromNamespaceAndPath(PotionCauldron.MOD_ID, "main"))
+            .named(Identifier.fromNamespaceAndPath(PotionCauldron.MOD_ID, "main"))
             .networkProtocolVersion(PROTOCOL_VERSION)
             .clientAcceptedVersions(Channel.VersionTest.exact(PROTOCOL_VERSION))
             .serverAcceptedVersions(Channel.VersionTest.exact(PROTOCOL_VERSION))

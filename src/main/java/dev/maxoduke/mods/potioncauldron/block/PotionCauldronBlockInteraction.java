@@ -9,7 +9,7 @@ import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -55,7 +55,7 @@ public class PotionCauldronBlockInteraction
 
     public static InteractionResult fillEmptyCauldronWithPotion(BlockState ignored, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, ItemStack itemStack)
     {
-        ResourceLocation potionTypeResource = ResourceLocation.tryParse(itemStack.getItem().toString());
+        Identifier potionTypeResource = Identifier.tryParse(itemStack.getItem().toString());
         PotionContents potionContents = itemStack.get(DataComponents.POTION_CONTENTS);
 
         Optional<Holder<Potion>> potionHolder = potionContents.potion();
@@ -90,7 +90,7 @@ public class PotionCauldronBlockInteraction
 
     private static InteractionResult fillPotionCauldronWithPotion(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, ItemStack itemStack)
     {
-        ResourceLocation potionTypeResource = ResourceLocation.tryParse(itemStack.getItem().toString());
+        Identifier potionTypeResource = Identifier.tryParse(itemStack.getItem().toString());
         if (potionTypeResource == null)
             return InteractionResult.PASS;
 
@@ -160,8 +160,8 @@ public class PotionCauldronBlockInteraction
         if (potion == null)
             return InteractionResult.PASS;
 
-        ResourceLocation potionTypeResourceLocation = ResourceLocation.tryParse(blockEntity.getPotionType());
-        if (potionTypeResourceLocation == null)
+        Identifier potionTypeIdentifier = Identifier.tryParse(blockEntity.getPotionType());
+        if (potionTypeIdentifier == null)
             return InteractionResult.PASS;
 
         if (level.isClientSide())
@@ -171,7 +171,7 @@ public class PotionCauldronBlockInteraction
         if (particleColor.isPresent())
             ServerNetworking.sendParticlesToClients(new ParticlePayload(ParticleTypes.ENTITY_EFFECT, blockPos, particleColor.getAsInt(), true));
 
-        Optional<Holder.Reference<Item>> potionTypeHolder = BuiltInRegistries.ITEM.get(potionTypeResourceLocation);
+        Optional<Holder.Reference<Item>> potionTypeHolder = BuiltInRegistries.ITEM.get(potionTypeIdentifier);
         if (potionTypeHolder.isEmpty())
             return InteractionResult.PASS;
 
