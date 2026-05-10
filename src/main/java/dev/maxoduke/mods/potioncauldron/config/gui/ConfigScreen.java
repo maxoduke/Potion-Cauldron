@@ -5,7 +5,7 @@ import dev.maxoduke.mods.potioncauldron.config.ServerConfig;
 import dev.maxoduke.mods.potioncauldron.networking.ServerNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.Tooltip;
@@ -83,19 +83,19 @@ public class ConfigScreen extends Screen
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
+    public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick)
     {
-        super.render(graphics, mouseX, mouseY, partialTick);
+        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
 
-        graphics.drawCenteredString(font, TITLE, width / 2, 20, 0xFFFFFF);
+        graphics.centeredText(font, TITLE, width / 2, 20, 0xFFFFFF);
 
-        title.render(graphics, mouseX, mouseY, partialTick);
-        noticeIcon.render(graphics, mouseX, mouseY, partialTick);
+        title.extractRenderState(graphics, mouseX, mouseY, partialTick);
+        noticeIcon.extractRenderState(graphics, mouseX, mouseY, partialTick);
 
-        configList.render(graphics, mouseX, mouseY, partialTick);
-        saveButton.render(graphics, mouseX, mouseY, partialTick);
-        resetButton.render(graphics, mouseX, mouseY, partialTick);
-        cancelButton.render(graphics, mouseX, mouseY, partialTick);
+        configList.extractRenderState(graphics, mouseX, mouseY, partialTick);
+        saveButton.extractRenderState(graphics, mouseX, mouseY, partialTick);
+        resetButton.extractRenderState(graphics, mouseX, mouseY, partialTick);
+        cancelButton.extractRenderState(graphics, mouseX, mouseY, partialTick);
     }
 
     private void saveButtonClicked(Button ignored)

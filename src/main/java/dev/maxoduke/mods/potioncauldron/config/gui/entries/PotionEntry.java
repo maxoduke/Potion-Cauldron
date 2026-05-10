@@ -2,7 +2,7 @@ package dev.maxoduke.mods.potioncauldron.config.gui.entries;
 
 import dev.maxoduke.mods.potioncauldron.config.gui.ConfigList;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.Tooltip;
@@ -44,22 +44,22 @@ public class PotionEntry extends ConfigList.Entry
     }
 
     @Override
-    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void extractContent(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
         final int left = super.getX();
         final int top = super.getY();
 
         potionNameWidget.setX(left + 4 + leftIndent);
         potionNameWidget.setY(top);
-        potionNameWidget.render(guiGraphics, mouseX, mouseY, partialTick);
+        potionNameWidget.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
         potionChanceWidget.setX(left + 189 + leftIndent);
         potionChanceWidget.setY(top);
-        potionChanceWidget.render(guiGraphics, mouseX, mouseY, partialTick);
+        potionChanceWidget.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
         removeButton.setX(left + 228 + leftIndent);
         removeButton.setY(top);
-        removeButton.render(guiGraphics, mouseX, mouseY, partialTick);
+        removeButton.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     @NotNull

@@ -2,7 +2,7 @@ package dev.maxoduke.mods.potioncauldron.config.gui.entries;
 
 import dev.maxoduke.mods.potioncauldron.config.gui.ConfigList;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.StringWidget;
@@ -49,28 +49,28 @@ public class AddPotionEntry extends ConfigList.Entry
     }
 
     @Override
-    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void extractContent(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
         final int left = super.getX();
         final int top = super.getY();
 
         potionNameEdit.setX(left + leftIndent);
         potionNameEdit.setY(top);
-        potionNameEdit.render(guiGraphics, mouseX, mouseY, partialTick);
+        potionNameEdit.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
         potionChanceEdit.setX(left + 185 + leftIndent);
         potionChanceEdit.setY(top);
-        potionChanceEdit.render(guiGraphics, mouseX, mouseY, partialTick);
+        potionChanceEdit.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
         addButton.setX(left + 228 + leftIndent);
         addButton.setY(top - 2);
-        addButton.render(guiGraphics, mouseX, mouseY, partialTick);
+        addButton.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
         if (hasError)
         {
             errorIcon.setX(left + 265 + leftIndent);
             errorIcon.setY(top + 5);
-            errorIcon.render(guiGraphics, mouseX, mouseY, partialTick);
+            errorIcon.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
         }
     }
 

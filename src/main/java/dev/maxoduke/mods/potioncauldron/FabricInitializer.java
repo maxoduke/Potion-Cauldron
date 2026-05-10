@@ -22,13 +22,13 @@ public class FabricInitializer implements ModInitializer, ClientModInitializer
 {
     public void onInitialize()
     {
-        PayloadTypeRegistry.playS2C().register(ClientConfigPayload.TYPE, ClientConfigPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(ParticlePayload.TYPE, ParticlePayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(ClientConfigPayload.TYPE, ClientConfigPayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(ParticlePayload.TYPE, ParticlePayload.CODEC);
 
         CommandRegistrationCallback.EVENT.register(CommandHandlers::register);
         ServerLifecycleEvents.SERVER_STARTING.register(ServerNetworking::serverStarting);
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> ServerNetworking.serverStopping());
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> ServerNetworking.sendConfigToClient(handler.player));
+        ServerLifecycleEvents.SERVER_STOPPING.register(ignoredServer -> ServerNetworking.serverStopping());
+        ServerPlayConnectionEvents.JOIN.register((handler, ignoredSender, ignoredServer) -> ServerNetworking.sendConfigToClient(handler.player));
     }
 
     @Environment(EnvType.CLIENT)
@@ -36,9 +36,9 @@ public class FabricInitializer implements ModInitializer, ClientModInitializer
     {
         BlockEntityRenderers.register(PotionCauldron.BLOCK_ENTITY, PotionCauldronBlockEntityRenderer::new);
 
-        ClientPlayNetworking.registerGlobalReceiver(ClientConfigPayload.TYPE, (payload, context) -> ClientNetworking.receiveConfigFromServer(payload));
-        ClientPlayNetworking.registerGlobalReceiver(ParticlePayload.TYPE, (payload, context) -> ClientNetworking.receiveParticlesFromServer(payload));
+        ClientPlayNetworking.registerGlobalReceiver(ClientConfigPayload.TYPE, (payload, ignoredContext) -> ClientNetworking.receiveConfigFromServer(payload));
+        ClientPlayNetworking.registerGlobalReceiver(ParticlePayload.TYPE, (payload, ignoredContext) -> ClientNetworking.receiveParticlesFromServer(payload));
 
-        ClientPlayConnectionEvents.DISCONNECT.register(PotionCauldron.CONFIG_CHANNEL, (handler, client) -> ClientNetworking.clientDisconnected());
+        ClientPlayConnectionEvents.DISCONNECT.register(PotionCauldron.CONFIG_CHANNEL, (ignoredHandler, ignoredClient) -> ClientNetworking.clientDisconnected());
     }
 }

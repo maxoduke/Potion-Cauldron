@@ -2,7 +2,7 @@ package dev.maxoduke.mods.potioncauldron.config.gui.entries;
 
 import dev.maxoduke.mods.potioncauldron.config.gui.ConfigList;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -28,18 +28,18 @@ public class OnOffButtonEntry extends ConfigList.Entry
     }
 
     @Override
-    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void extractContent(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
         final int left = super.getX();
         final int top = super.getY();
 
         label.setX(left);
         label.setY(top);
-        label.render(guiGraphics, mouseX, mouseY, partialTick);
+        label.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
         cycleButton.setX(left + 267);
         cycleButton.setY(top);
-        cycleButton.render(guiGraphics, mouseX, mouseY, partialTick);
+        cycleButton.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     @Override

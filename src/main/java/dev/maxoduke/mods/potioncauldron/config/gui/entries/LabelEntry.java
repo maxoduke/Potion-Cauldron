@@ -2,7 +2,7 @@ package dev.maxoduke.mods.potioncauldron.config.gui.entries;
 
 import dev.maxoduke.mods.potioncauldron.config.gui.ConfigList;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -31,20 +31,20 @@ public class LabelEntry extends ConfigList.Entry
     }
 
     @Override
-    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void extractContent(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
         final int left = super.getX();
         final int top = super.getY();
 
         label.setX(left + leftIndent);
         label.setY(top);
-        label.render(guiGraphics, mouseX, mouseY, partialTick);
+        label.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
         if (hasError)
         {
             errorIcon.setX(left + 306);
             errorIcon.setY(top + 5);
-            errorIcon.render(guiGraphics, mouseX, mouseY, partialTick);
+            errorIcon.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
         }
     }
 

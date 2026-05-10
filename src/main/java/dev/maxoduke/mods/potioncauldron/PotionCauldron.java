@@ -2,7 +2,7 @@ package dev.maxoduke.mods.potioncauldron;
 
 import dev.maxoduke.mods.potioncauldron.block.PotionCauldronBlock;
 import dev.maxoduke.mods.potioncauldron.block.PotionCauldronBlockEntity;
-import dev.maxoduke.mods.potioncauldron.block.PotionCauldronBlockInteraction;
+import dev.maxoduke.mods.potioncauldron.block.PotionCauldronBlockInteractions;
 import dev.maxoduke.mods.potioncauldron.config.ConfigManager;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
@@ -11,6 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -18,7 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings({ "SpellCheckingInspection" })
+@SuppressWarnings("SpellCheckingInspection")
 public class PotionCauldron
 {
     public static final String MOD_ID = "potioncauldron";
@@ -35,7 +36,7 @@ public class PotionCauldron
 
     public static final PotionCauldronBlock BLOCK = (PotionCauldronBlock) Blocks.register(
         ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, BLOCK_NAME)),
-        properties -> new PotionCauldronBlock(PotionCauldronBlockInteraction.INTERACTION_MAP, properties),
+        properties -> new PotionCauldronBlock(Biome.Precipitation.RAIN, PotionCauldronBlockInteractions.POTION, properties),
         BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON)
     );
 
@@ -53,6 +54,6 @@ public class PotionCauldron
 
     static
     {
-        PotionCauldronBlockInteraction.bootstrap();
+        PotionCauldronBlockInteractions.bootstrap();
     }
 }
