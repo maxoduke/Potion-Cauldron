@@ -28,14 +28,14 @@ public class NetworkHandler
             .messageBuilder(ClientConfigPayload.class, 1, NetworkDirection.PLAY_TO_CLIENT)
             .encoder(ClientConfigPayload::writeToBuf)
             .decoder(ClientConfigPayload::fromBuf)
-            .consumerMainThread((config, context) -> ClientNetworking.receiveConfigFromServer(config))
+            .consumerMainThread((config, ignoredContext) -> ClientNetworking.receiveConfigFromServer(config))
             .add();
 
         INSTANCE
             .messageBuilder(ParticlePayload.class, 2, NetworkDirection.PLAY_TO_CLIENT)
             .encoder(ParticlePayload::writeToBuf)
             .decoder(ParticlePayload::fromBuf)
-            .consumerMainThread((packet, context) -> ClientNetworking.receiveParticlesFromServer(packet))
+            .consumerMainThread((packet, ignoredContext) -> ClientNetworking.receiveParticlesFromServer(packet))
             .add();
     }
 }

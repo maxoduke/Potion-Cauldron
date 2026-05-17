@@ -2,15 +2,14 @@ package dev.maxoduke.mods.potioncauldron.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.*;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.alchemy.Potion;
@@ -19,17 +18,15 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.jspecify.annotations.NonNull;
 
 import java.util.OptionalInt;
 
+@SuppressWarnings("deprecation")
 public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<@NotNull PotionCauldronBlockEntity, @NotNull PotionCauldronBlockEntityRenderState>
 {
     private static final float[] FLUID_HEIGHT = { 0, 0.5625f, 0.75f, 0.9375f };
-
-    @SuppressWarnings("deprecation")
-    private static final Material WATER_MATERIAL = new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.withDefaultNamespace("block/water_still"));
-
-    @SuppressWarnings("deprecation")
+    private static final SpriteId WATER_MATERIAL = new SpriteId(TextureAtlas.LOCATION_BLOCKS, Identifier.withDefaultNamespace("block/water_still"));
     private static final RenderType POTION_CAULDRON_BLOCK_RENDER_TYPE = RenderTypes.entityTranslucent(TextureAtlas.LOCATION_BLOCKS);
 
     public PotionCauldronBlockEntityRenderer(BlockEntityRendererProvider.Context ignored) { }
@@ -41,7 +38,7 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<@N
     }
 
     @Override
-    public void extractRenderState(PotionCauldronBlockEntity blockEntity, PotionCauldronBlockEntityRenderState blockEntityRenderState, float f, @NotNull Vec3 vec3, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay)
+    public void extractRenderState(@NonNull PotionCauldronBlockEntity blockEntity, @NonNull PotionCauldronBlockEntityRenderState blockEntityRenderState, float f, @NotNull Vec3 vec3, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay)
     {
         BlockEntityRenderer.super.extractRenderState(blockEntity, blockEntityRenderState, f, vec3, crumblingOverlay);
 
@@ -63,11 +60,11 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<@N
     }
 
     @Override
-    public void submit(PotionCauldronBlockEntityRenderState blockEntityRenderState, @NotNull PoseStack poseStack, @NotNull SubmitNodeCollector submitNodeCollector, @NotNull CameraRenderState cameraRenderState)
+    public void submit(@NotNull PotionCauldronBlockEntityRenderState state, @NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, net.minecraft.client.renderer.state.level.@NonNull CameraRenderState camera)
     {
-        int liquidLevel = blockEntityRenderState.getLiquidLevel();
-        Holder<Potion> potion = blockEntityRenderState.getPotion();
-        int spriteColor = blockEntityRenderState.getSpriteColor();
+        int liquidLevel = state.getLiquidLevel();
+        Holder<Potion> potion = state.getPotion();
+        int spriteColor = state.getSpriteColor();
 
         if (liquidLevel == 0 || potion == null || spriteColor == 0)
             return;

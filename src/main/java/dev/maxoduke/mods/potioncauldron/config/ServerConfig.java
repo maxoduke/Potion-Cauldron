@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashMap;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class ServerConfig implements IConfig
 {
     public static final String CONFIG_FILE_NAME;

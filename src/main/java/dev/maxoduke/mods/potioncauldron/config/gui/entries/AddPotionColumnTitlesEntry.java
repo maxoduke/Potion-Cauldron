@@ -2,7 +2,7 @@ package dev.maxoduke.mods.potioncauldron.config.gui.entries;
 
 import dev.maxoduke.mods.potioncauldron.config.gui.ConfigList;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -30,18 +30,18 @@ public class AddPotionColumnTitlesEntry extends ConfigList.Entry
     }
 
     @Override
-    public void renderContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
+    public void extractContent(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, boolean bl, float partialTick)
     {
         final int left = super.getX();
         final int top = super.getY();
 
         potionName.setX(left + leftIndent);
         potionName.setY(top);
-        potionName.render(guiGraphics, mouseX, mouseY, partialTick);
+        potionName.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
         percentage.setX(left + 185 + leftIndent);
         percentage.setY(top);
-        percentage.render(guiGraphics, mouseX, mouseY, partialTick);
+        percentage.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     @NotNull

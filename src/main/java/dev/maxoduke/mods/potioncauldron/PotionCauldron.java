@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -63,7 +64,8 @@ public class PotionCauldron
     public static final RegistryObject<PotionCauldronBlock> BLOCK = BLOCKS.register(
         BLOCK_NAME,
         () -> new PotionCauldronBlock(
-            PotionCauldronBlockInteraction.INTERACTION_MAP,
+            Biome.Precipitation.RAIN,
+            PotionCauldronBlockInteractions.POTION,
             BlockBehaviour.Properties
                 .ofFullCopy(Blocks.CAULDRON)
                 .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, BLOCK_NAME)))
@@ -85,9 +87,7 @@ public class PotionCauldron
     public PotionCauldron(FMLJavaModLoadingContext context)
     {
         PotionCauldron.context = context;
-
-        CauldronInteractionInjector.injectIntoEmptyPotionInteraction();
-        PotionCauldronBlockInteraction.bootstrap();
+        PotionCauldronBlockInteractions.bootstrap();
 
         NetworkHandler.register();
 

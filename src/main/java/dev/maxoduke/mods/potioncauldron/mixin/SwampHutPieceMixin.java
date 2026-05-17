@@ -28,7 +28,16 @@ import java.util.Optional;
 public class SwampHutPieceMixin
 {
     @Inject(method = "postProcess", at = @At("TAIL"))
-    public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox box, ChunkPos chunkPos, BlockPos pos, CallbackInfo callbackInfo)
+    public void postProcess(
+        final WorldGenLevel level,
+        final StructureManager structureManager,
+        final ChunkGenerator generator,
+        final RandomSource random,
+        final BoundingBox chunkBB,
+        final ChunkPos chunkPos,
+        final BlockPos referencePos,
+        CallbackInfo ci
+    )
     {
         if (!PotionCauldron.CONFIG_MANAGER.serverConfig().shouldGenerateInSwampHuts())
             return;
@@ -49,7 +58,7 @@ public class SwampHutPieceMixin
             return;
 
         SwampHutPiece swampHut = (SwampHutPiece) ((Object) this);
-        swampHut.placeBlock(level, PotionCauldron.BLOCK.get().defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, randomPotionLevel), 4, 2, 6, box);
+        swampHut.placeBlock(level, PotionCauldron.BLOCK.get().defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, randomPotionLevel), 4, 2, 6, chunkBB);
 
         PotionCauldronBlockEntity blockEntity = (PotionCauldronBlockEntity) level.getBlockEntity(swampHut.getWorldPos(4, 2, 6));
         blockEntity.setPotion(randomPotion.get());

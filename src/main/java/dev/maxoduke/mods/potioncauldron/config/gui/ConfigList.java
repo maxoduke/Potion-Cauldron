@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-@SuppressWarnings("DuplicatedCode")
+@SuppressWarnings({ "DuplicatedCode", "SpellCheckingInspection" })
 public class ConfigList extends ContainerObjectSelectionList<ConfigList.@NotNull Entry>
 {
     private static final Component EVAPORATE_POTION_WHEN_MIXED = Component.translatable("config.text.evaporatePotionWhenMixed");

@@ -1,17 +1,20 @@
 package dev.maxoduke.mods.potioncauldron.block;
 
+import com.mojang.serialization.Codec;
 import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import dev.maxoduke.mods.potioncauldron.networking.ServerNetworking;
 import dev.maxoduke.mods.potioncauldron.networking.payloads.ParticlePayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.cauldron.CauldronInteractions;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
@@ -27,30 +30,37 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
 
 @SuppressWarnings({ "DuplicatedCode", "DataFlowIssue" })
-public class PotionCauldronBlockInteraction
+public class PotionCauldronBlockInteractions
 {
-    public static final CauldronInteraction.InteractionMap INTERACTION_MAP = CauldronInteraction.newInteractionMap("PotionCauldronInteractionMap");
-    public static final Map<Item, CauldronInteraction> MAP = INTERACTION_MAP.map();
+    private static final ExtraCodecs.LateBoundIdMapper<String, CauldronInteraction.Dispatcher> ID_MAPPER = new ExtraCodecs.LateBoundIdMapper<>();
+    public static final Codec<CauldronInteraction.Dispatcher> CODEC = ID_MAPPER.codec(Codec.STRING);
+
+    public static final CauldronInteraction.Dispatcher POTION = createPotionDispatcher();
+
+    private static CauldronInteraction.Dispatcher createPotionDispatcher() {
+        CauldronInteraction.Dispatcher result = new CauldronInteraction.Dispatcher();
+        ID_MAPPER.put("potion", result);
+        return result;
+    }
 
     public static void bootstrap()
     {
-        CauldronInteraction.EMPTY.map().put(Items.SPLASH_POTION, PotionCauldronBlockInteraction::fillEmptyCauldronWithPotion);
-        CauldronInteraction.EMPTY.map().put(Items.LINGERING_POTION, PotionCauldronBlockInteraction::fillEmptyCauldronWithPotion);
+        CauldronInteractions.EMPTY.put(Items.SPLASH_POTION, PotionCauldronBlockInteractions::fillEmptyCauldronWithPotion);
+        CauldronInteractions.EMPTY.put(Items.LINGERING_POTION, PotionCauldronBlockInteractions::fillEmptyCauldronWithPotion);
 
-        MAP.put(Items.POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
-        MAP.put(Items.SPLASH_POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
-        MAP.put(Items.LINGERING_POTION, PotionCauldronBlockInteraction::fillPotionCauldronWithPotion);
+        POTION.put(Items.POTION, PotionCauldronBlockInteractions::fillPotionCauldronWithPotion);
+        POTION.put(Items.SPLASH_POTION, PotionCauldronBlockInteractions::fillPotionCauldronWithPotion);
+        POTION.put(Items.LINGERING_POTION, PotionCauldronBlockInteractions::fillPotionCauldronWithPotion);
 
-        MAP.put(Items.WATER_BUCKET, PotionCauldronBlockInteraction::fillPotionCauldronWithWaterOrLavaBucket);
-        MAP.put(Items.LAVA_BUCKET, PotionCauldronBlockInteraction::fillPotionCauldronWithWaterOrLavaBucket);
+        POTION.put(Items.WATER_BUCKET, PotionCauldronBlockInteractions::fillPotionCauldronWithWaterOrLavaBucket);
+        POTION.put(Items.LAVA_BUCKET, PotionCauldronBlockInteractions::fillPotionCauldronWithWaterOrLavaBucket);
 
-        MAP.put(Items.GLASS_BOTTLE, PotionCauldronBlockInteraction::fillBottleFromPotionCauldron);
-        MAP.put(Items.ARROW, PotionCauldronBlockInteraction::createTippedArrowsFromPotionCauldron);
+        POTION.put(Items.GLASS_BOTTLE, PotionCauldronBlockInteractions::fillBottleFromPotionCauldron);
+        POTION.put(Items.ARROW, PotionCauldronBlockInteractions::createTippedArrowsFromPotionCauldron);
     }
 
     public static InteractionResult fillEmptyCauldronWithPotion(BlockState ignored, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, ItemStack itemStack)

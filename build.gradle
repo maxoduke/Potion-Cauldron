@@ -1,11 +1,10 @@
 //file:noinspection SpellCheckingInspection
 //file:noinspection GroovyAssignabilityCheck
 plugins {
-    id 'eclipse'
+    id 'java'
     id 'idea'
-    id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0.46,6.2)'
-    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'eclipse'
+    id 'net.minecraftforge.gradle' version '[7.0.23,8.0)'
 }
 
 version = mod_version
@@ -15,30 +14,23 @@ base {
     archivesName = "${jar_name}-forge"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 minecraft {
-    mappings channel: mapping_channel, version: mapping_version
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformers = files('src/main/resources/META-INF/accesstransformer.cfg')
     
-    // Tell FG to not automatically create the reobf tasks, as we now use Official mappings at runtime, If you don't use them at dev time then you'll have to fix your reobf yourself.
-    reobf = false
-    copyIdeResources = true
-
     runs {
         configureEach {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+            systemProperty 'eventbus.api.strictRuntimeChecks', 'true'
+            args "--mixin.config=${mod_id}.mixins.json"
         }
 
-        client {
-            property 'forge.enabledGameTestNamespaces', mod_id
+        register('client') {
+            workingDir = layout.projectDirectory.dir('run/client')
         }
 
-        server {
-            property 'forge.enabledGameTestNamespaces', mod_id
+        register('server') {
+            workingDir = layout.projectDirectory.dir('run/server')
             args '--nogui'
         }
     }
@@ -47,37 +39,16 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    minecraft.mavenizer(it) // In Kotlin, it = this
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
     mavenCentral()
-    maven {
-        name = 'Forge'
-        url = 'https://maven.minecraftforge.net'
-    }
-    maven {
-        name = 'Minecraft libraries'
-        url = 'https://libraries.minecraft.net'
-    }
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = 'Sponge'
-                url = 'https://repo.spongepowered.org/repository/maven-public'
-            }
-        }
-        filter {
-            includeGroupAndSubgroups('org.spongepowered')
-        }
-    }
+//    gradlePluginPortal()
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.12'
-}
-
-mixin {
-    add sourceSets.main, "${mod_id}.refmap.json"
-    config "${mod_id}.mixins.json"
+    implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
+    annotationProcessor 'net.minecraftforge:eventbus-validator:7.0.1'
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -94,12 +65,14 @@ tasks.named('processResources', ProcessResources).configure {
             mod_icon: mod_icon,
             mod_license: mod_license, 
             mod_description: mod_description,
-            mod_repo: mod_repo
+            mod_repo: mod_repo,
+            project_version: project.version,
+            project_group: project.group
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
-        expand replaceProperties + [project: project]
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta', '*.mixins.json']) {
+        expand replaceProperties
     }
 }
 
@@ -119,14 +92,4 @@ tasks.named('jar', Jar).configure {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-}
-
-eclipse {
-    synchronizationTasks 'genEclipseRuns'
-}
-
-sourceSets.each {
-    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
-    it.output.resourcesDir = dir
-    it.java.destinationDirectory = dir
 }
