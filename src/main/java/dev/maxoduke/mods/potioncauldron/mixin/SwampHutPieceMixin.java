@@ -23,20 +23,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-@SuppressWarnings({ "DataFlowIssue" })
+@SuppressWarnings({ "DataFlowIssue", "unused" })
 @Mixin(SwampHutPiece.class)
 public class SwampHutPieceMixin
 {
     @Inject(method = "postProcess", at = @At("TAIL"))
     public void postProcess(
         final WorldGenLevel level,
-        final StructureManager structureManager,
-        final ChunkGenerator generator,
-        final RandomSource random,
+        final StructureManager ignoredStructureManager,
+        final ChunkGenerator ignoredGenerator,
+        final RandomSource ignoredRandom,
         final BoundingBox chunkBB,
-        final ChunkPos chunkPos,
-        final BlockPos referencePos,
-        CallbackInfo ci
+        final ChunkPos ignoredChunkPos,
+        final BlockPos ignoredReferencePos,
+        CallbackInfo ignoredCi
     )
     {
         if (!PotionCauldron.CONFIG_MANAGER.serverConfig().shouldGenerateInSwampHuts())
