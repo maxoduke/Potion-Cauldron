@@ -105,17 +105,17 @@ public class ConfigScreen extends Screen
         if (PotionCauldron.CONFIG_MANAGER.updateServerConfig(configToChange))
             ServerNetworking.sendConfigToAllClients();
 
-        Minecraft.getInstance().setScreen(parent);
+        Minecraft.getInstance().setScreenAndShow(parent);
     }
 
     private void resetButtonClicked(Button ignored)
     {
-        Minecraft.getInstance().setScreen(reset(parent));
+        Minecraft.getInstance().setScreenAndShow(reset(parent));
     }
 
     private void cancelButtonClicked(Button ignored)
     {
-        Minecraft.getInstance().setScreen(parent);
+        Minecraft.getInstance().setScreenAndShow(parent);
     }
 
     private void updateButtonStates()

@@ -21,7 +21,7 @@ repositories {
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
-	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 	implementation("com.terraformersmc:modmenu:${project.mod_menu_version}")
 }
 
@@ -36,7 +36,7 @@ processResources {
 		"minecraft_version_range": minecraft_version_range,
 		"fabric_loader_version": fabric_loader_version,
 		"fabric_loader_version_range": fabric_loader_version_range,
-		"fabric_version": fabric_version,
+		"fabric_api_version": fabric_api_version,
 		"mod_id": mod_id,
 		"mod_name": mod_name,
 		"mod_author": mod_author,
