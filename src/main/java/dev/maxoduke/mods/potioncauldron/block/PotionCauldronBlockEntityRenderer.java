@@ -40,7 +40,6 @@ public class PotionCauldronBlockEntityRenderer implements BlockEntityRenderer<@N
         return new PotionCauldronBlockEntityRenderState();
     }
 
-    @SuppressWarnings("DataFlowIssue")
     @Override
     public void extractRenderState(@NonNull PotionCauldronBlockEntity blockEntity, @NonNull PotionCauldronBlockEntityRenderState blockEntityRenderState, float f, @NotNull Vec3 vec3, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay)
     {

@@ -18,15 +18,23 @@ repositories {
 	}
 }
 
+loom {
+	accessWidenerPath = file("src/main/resources/${mod_id}.classtweaker")
+	runs {
+		client {
+			runDirectory = file("run/client")
+		}
+		server {
+			runDirectory = file("run/server")
+		}
+	}
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 	implementation("com.terraformersmc:modmenu:${project.mod_menu_version}")
-}
-
-loom {
-	accessWidenerPath = file("src/main/resources/${mod_id}.classtweaker")
 }
 
 processResources {

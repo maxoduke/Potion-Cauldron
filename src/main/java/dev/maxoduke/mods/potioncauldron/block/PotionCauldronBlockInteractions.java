@@ -1,6 +1,5 @@
 package dev.maxoduke.mods.potioncauldron.block;
 
-import com.mojang.serialization.Codec;
 import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import dev.maxoduke.mods.potioncauldron.networking.ServerNetworking;
 import dev.maxoduke.mods.potioncauldron.networking.payloads.ParticlePayload;
@@ -15,6 +14,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,7 +37,6 @@ import java.util.OptionalInt;
 public class PotionCauldronBlockInteractions
 {
     private static final ExtraCodecs.LateBoundIdMapper<String, CauldronInteraction.Dispatcher> ID_MAPPER = new ExtraCodecs.LateBoundIdMapper<>();
-    public static final Codec<CauldronInteraction.Dispatcher> CODEC = ID_MAPPER.codec(Codec.STRING);
 
     public static final CauldronInteraction.Dispatcher POTION = createPotionDispatcher();
 
@@ -240,7 +239,7 @@ public class PotionCauldronBlockInteractions
 
         Inventory inventory = player.getInventory();
         if (!inventory.add(tippedArrows))
-            player.drop(tippedArrows, false);
+            player.drop(tippedArrows, false, Prediction.PREDICTED);
 
         level.playSound(null, blockPos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0f, 1.0f);
         level.gameEvent(null, GameEvent.FLUID_PICKUP, blockPos);

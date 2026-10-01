@@ -37,7 +37,7 @@ public class PotionCauldron
     public static final PotionCauldronBlock BLOCK = (PotionCauldronBlock) Blocks.register(
         ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, BLOCK_NAME)),
         properties -> new PotionCauldronBlock(Biome.Precipitation.RAIN, PotionCauldronBlockInteractions.POTION, properties),
-        BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON)
+        BlockBehaviour.Properties.ofFullCopy(Blocks.WATER_CAULDRON)
     );
 
     public static final BlockEntityType<@NotNull PotionCauldronBlockEntity> BLOCK_ENTITY = Registry.register(
