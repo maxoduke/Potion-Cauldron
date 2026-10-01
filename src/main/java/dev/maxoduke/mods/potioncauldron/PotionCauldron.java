@@ -65,9 +65,10 @@ public class PotionCauldron
         BLOCK_NAME,
         () -> new PotionCauldronBlock(
             Biome.Precipitation.RAIN,
+
             PotionCauldronBlockInteractions.POTION,
             BlockBehaviour.Properties
-                .ofFullCopy(Blocks.CAULDRON)
+                .ofFullCopy(Blocks.WATER_CAULDRON)
                 .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, BLOCK_NAME)))
         )
     );

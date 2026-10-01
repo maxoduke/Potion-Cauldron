@@ -30,12 +30,12 @@ public class SwampHutPieceMixin
     @Inject(method = "postProcess", at = @At("TAIL"))
     public void postProcess(
         final WorldGenLevel level,
-        final StructureManager ignoredStructureManager,
-        final ChunkGenerator ignoredGenerator,
-        final RandomSource ignoredRandom,
+        final StructureManager structureManager,
+        final ChunkGenerator generator,
+        final RandomSource random,
         final BoundingBox chunkBB,
-        final ChunkPos ignoredChunkPos,
-        final BlockPos ignoredReferencePos,
+        final ChunkPos chunkPos,
+        final BlockPos referencePos,
         CallbackInfo ignoredCi
     )
     {

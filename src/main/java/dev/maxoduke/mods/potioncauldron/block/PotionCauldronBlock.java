@@ -1,11 +1,10 @@
 package dev.maxoduke.mods.potioncauldron.block;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.maxoduke.mods.potioncauldron.PotionCauldron;
 import dev.maxoduke.mods.potioncauldron.config.ServerConfig;
 import dev.maxoduke.mods.potioncauldron.util.ParticleUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.server.level.ServerLevel;
@@ -40,15 +39,6 @@ import java.util.OptionalInt;
 
 public class PotionCauldronBlock extends AbstractCauldronBlock implements EntityBlock
 {
-    public static final MapCodec<PotionCauldronBlock> CODEC = RecordCodecBuilder.mapCodec(
-        i -> i.group(
-                Biome.Precipitation.CODEC.fieldOf("precipitation").forGetter(b -> b.precipitation),
-                PotionCauldronBlockInteractions.CODEC.fieldOf("interactions").forGetter(b -> b.interactionMap),
-                propertiesCodec()
-            )
-            .apply(i, PotionCauldronBlock::new)
-    );
-
     public static final int MIN_FILL_LEVEL = 1;
     public static final int MAX_FILL_LEVEL = 3;
     public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL_CAULDRON;
@@ -62,13 +52,11 @@ public class PotionCauldronBlock extends AbstractCauldronBlock implements Entity
     }
 
     private final Biome.Precipitation precipitation;
-    private final CauldronInteraction.Dispatcher interactionMap;
 
     public PotionCauldronBlock(Biome.Precipitation precipitation, CauldronInteraction.Dispatcher interactionMap, Properties properties)
     {
         super(properties, interactionMap);
         this.precipitation = precipitation;
-        this.interactionMap = interactionMap;
 
         registerDefaultState(defaultBlockState().setValue(LEVEL, 1));
     }
@@ -77,6 +65,12 @@ public class PotionCauldronBlock extends AbstractCauldronBlock implements Entity
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(LEVEL);
+    }
+
+    @Override
+    protected int getAnalogOutputSignal(final BlockState state, final @NonNull Level level, final @NonNull BlockPos pos, final @NonNull Direction direction)
+    {
+        return state.getValue(LEVEL);
     }
 
     @Override
@@ -199,11 +193,5 @@ public class PotionCauldronBlock extends AbstractCauldronBlock implements Entity
     public @NotNull ItemStack getCloneItemStack(@NotNull LevelReader reader, @NotNull BlockPos blockPos, @NotNull BlockState blockState, boolean bl)
     {
         return new ItemStack(Items.CAULDRON);
-    }
-
-    @Override
-    public @NonNull MapCodec<PotionCauldronBlock> codec()
-    {
-        return CODEC;
     }
 }
